@@ -20,6 +20,8 @@ The shared `SKILL.md` uses only Agent Skills standard frontmatter and Markdown. 
 
 The two reference servers use synthetic wholesale-company data. The naive reference has 20 tools, for the spec's full-review timing target. They are local MCP servers over stdio, unrelated to AgentFinland, and are not connected to external systems.
 
+Reference writes are disabled by default. `SAUNA_ALLOW_WRITES=1` enables only the good reference server's synthetic in-memory `place_order` tool; never set it for a real MCP server.
+
 ```sh
 npm ci
 SAUNA_VARIANT=naive node reference-servers/server.mjs
@@ -38,7 +40,7 @@ python3 scripts/grade.py --compare results-good-run1.json results-good-run2.json
 
 The naive server is seeded with the findings in `eval/reference-expectations.json`. The good server should produce no High or Critical false positives. The checker evaluates rule IDs and tools; it does not reinterpret prose. `eval/agent-matrix.md` records the manual cross-agent procedure and evidence required for a release claim.
 
-The initial local matrix is in `eval/agent-matrix-v0.1.json`. The release criterion is still open until all three agents run the same skill unchanged and two-run comparisons pass.
+The current validation matrix and sanitized Codex artifacts are in `eval/agent-matrix-v0.1.json` and `eval/artifacts/`. Codex passed the naive seeded checks twice with stable high-severity findings and produced no High/Critical false positives on the good server. Claude Code and GitHub Copilot remain untested, so the three-agent release criterion is still open; this version is published as a prerelease.
 
 ## Grade a sanitized run
 

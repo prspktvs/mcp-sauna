@@ -27,7 +27,7 @@ def run_data():
             "input_schema": {"type": "object", "properties": {}, "required": []},
             "output_schema": None, "annotations": {"readOnlyHint": True},
         }],
-        "tasks": [{"id": "TASK-01", "success": True, "attempts": 1, "tool_calls": 1, "estimated_tokens": 20}],
+        "tasks": [{"id": "TASK-01", "status": "success", "attempts": 1, "tool_calls": 1, "estimated_tokens": 20}],
         "calls": [{
             "id": "CALL-01", "phase": "P1", "task_id": "TASK-01", "identity": None, "tool": "search_orders",
             "argument_fields": ["query"], "result_fields": ["orders"], "result_items": 1,
@@ -51,6 +51,29 @@ class GradeTests(unittest.TestCase):
         result = grade.build_results(data)
         self.assertEqual(result["summary"]["overall_grade"], "incomplete")
         self.assertEqual(result["scorecard"]["Safety"]["status"], "incomplete")
+
+    def test_skipped_tasks_are_excluded_from_success_rate_and_averages(self):
+        data = run_data()
+        data["tasks"].append({"id": "TASK-02", "status": "skipped", "attempts": 0, "tool_calls": 0, "estimated_tokens": 0})
+        result = grade.build_results(data)
+        metrics = result["metrics"]
+        self.assertEqual(metrics["task_count"], 2)
+        self.assertEqual(metrics["attempted_tasks"], 1)
+        self.assertEqual(metrics["skipped_tasks"], 1)
+        self.assertEqual(metrics["task_success_rate"], 1.0)
+        self.assertEqual(metrics["average_tool_calls_per_task"], 1)
+
+    def test_skipped_task_requires_zero_attempts(self):
+        data = run_data()
+        data["tasks"][0]["status"] = "skipped"
+        with self.assertRaisesRegex(grade.InputError, "0 attempts when skipped"):
+            grade.build_results(data)
+
+    def test_attempted_task_requires_call_evidence(self):
+        data = run_data()
+        data["tasks"][0]["tool_calls"] = 0
+        with self.assertRaisesRegex(grade.InputError, "without a tool call"):
+            grade.build_results(data)
 
     def test_grade_uses_fixed_rule_severity_and_evidence(self):
         data = run_data()

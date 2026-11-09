@@ -1,0 +1,963 @@
+{
+  "schema_version": 1,
+  "skill_version": "0.1.0",
+  "summary": {
+    "overall_grade": "incomplete",
+    "verdict": "The review is incomplete; skipped probes are not counted as passes.",
+    "top_fixes": [
+      {
+        "rule_id": "S5",
+        "tool": "mcp__naive_a__get_invoice_by_id",
+        "fix": "Enforce authenticated identity permissions on each invoice read and add a cross-identity denial regression test."
+      },
+      {
+        "rule_id": "E1",
+        "tool": "mcp__naive_a__list_orders",
+        "fix": "Validate date format before the upstream call and return a structured invalid_date error with an expected format."
+      },
+      {
+        "rule_id": "E2",
+        "tool": "mcp__naive_a__get_invoice_by_id",
+        "fix": "Reject blank required identifiers with a structured missing_required_field error."
+      }
+    ]
+  },
+  "scorecard": {
+    "Tool design": {
+      "grade": "D",
+      "status": "incomplete",
+      "finding_count": 46,
+      "incomplete_reasons": [
+        "P1 skipped: TASK-01 skipped after bounded customer discovery: list_orders has no customer/name/ID filter for the requested scope. TASK-03 skipped: list_invoices lacks unpaid/status and page-size filters. TASK-04 skipped: no read-only prepare/preview tool exists; writes are disabled. TASK-05 attempted twice but invoice responses lack dates/readable labels, so most-recent status cannot be established. TASK-02 had two bounded reads; product name, quantity and reorderPoint support the answer, with unrelated products also returned."
+      ]
+    },
+    "Context cost": {
+      "grade": "C",
+      "status": "complete",
+      "finding_count": 1,
+      "incomplete_reasons": []
+    },
+    "Responses": {
+      "grade": "D",
+      "status": "incomplete",
+      "finding_count": 7,
+      "incomplete_reasons": [
+        "P1 skipped: TASK-01 skipped after bounded customer discovery: list_orders has no customer/name/ID filter for the requested scope. TASK-03 skipped: list_invoices lacks unpaid/status and page-size filters. TASK-04 skipped: no read-only prepare/preview tool exists; writes are disabled. TASK-05 attempted twice but invoice responses lack dates/readable labels, so most-recent status cannot be established. TASK-02 had two bounded reads; product name, quantity and reorderPoint support the answer, with unrelated products also returned.",
+        "P3 skipped: All five list schemas lack a documented safe maximum/page size; no unbounded request was sent."
+      ]
+    },
+    "Errors": {
+      "grade": "D",
+      "status": "incomplete",
+      "finding_count": 4,
+      "incomplete_reasons": [
+        "P2 skipped: Partial coverage: malformed date tested once and empty identifiers tested on every read-only by-ID tool, including optional customerId. Empty optional customerId returning null is not E2. Stock tool skipped because it is write-capable. Omitted required fields are host-required and no numeric read bounds exist. No additional unknown-name test was needed after one applicable case per tool."
+      ]
+    },
+    "Safety": {
+      "grade": "F",
+      "status": "incomplete",
+      "finding_count": 25,
+      "incomplete_reasons": [
+        "P5 skipped: Writes disabled; all write-capable and destructive tools were excluded. Mutation findings are contract observations only."
+      ]
+    }
+  },
+  "metrics": {
+    "task_count": 8,
+    "attempted_tasks": 5,
+    "skipped_tasks": 3,
+    "successful_tasks": 4,
+    "task_success_rate": 0.8,
+    "average_tool_calls_per_task": 1.4,
+    "average_estimated_tokens_per_task": 134.8,
+    "tool_definition_bytes": 121477,
+    "estimated_tool_definition_tokens": 30370,
+    "unsafe_behaviors_found": 25,
+    "total_tool_calls": 15,
+    "token_estimate_method": "Provider usage when available; otherwise ceil(UTF-8 bytes / 4). Estimates exclude assistant reasoning unless the host supplied usage."
+  },
+  "findings": [
+    {
+      "id": "F-082",
+      "rule_id": "S5",
+      "severity": "Critical",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [
+        "CALL-13",
+        "CALL-14"
+      ],
+      "summary": "Observed exact same narrow invoice read through both configured identities returned the requested restricted record. User confirmed A may see it and B must not. Evidence records retain the actual A/B aliases.",
+      "why_it_matters": "Identity B can read a synthetic record reserved for A; authorization isolation is broken.",
+      "fix": "Enforce authenticated identity permissions on each invoice read and add a cross-identity denial regression test."
+    },
+    {
+      "id": "F-078",
+      "rule_id": "E1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [
+        "CALL-08"
+      ],
+      "summary": "Observed malformed date case returned only status and stack fields, with an upstream error and no actionable validation guidance.",
+      "why_it_matters": "The agent cannot correct input safely from the error.",
+      "fix": "Validate date format before the upstream call and return a structured invalid_date error with an expected format."
+    },
+    {
+      "id": "F-079",
+      "rule_id": "E2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [
+        "CALL-10"
+      ],
+      "summary": "Observed empty required identifier accepted as success with empty/null invoice, without validation error.",
+      "why_it_matters": "Missing required input is indistinguishable from no matching record.",
+      "fix": "Reject blank required identifiers with a structured missing_required_field error."
+    },
+    {
+      "id": "F-080",
+      "rule_id": "E2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [
+        "CALL-11"
+      ],
+      "summary": "Observed empty required identifier accepted as success with empty/null orders, without validation error.",
+      "why_it_matters": "Missing required input is indistinguishable from no matching record.",
+      "fix": "Reject blank required identifiers with a structured missing_required_field error."
+    },
+    {
+      "id": "F-081",
+      "rule_id": "E2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_product_by_sku",
+      "evidence_call_ids": [
+        "CALL-12"
+      ],
+      "summary": "Observed empty required identifier accepted as success with empty/null product, without validation error.",
+      "why_it_matters": "Missing required input is indistinguishable from no matching record.",
+      "fix": "Reject blank required identifiers with a structured missing_required_field error."
+    },
+    {
+      "id": "F-024",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_customers",
+      "evidence_call_ids": [],
+      "summary": "Static schema lacks limit/maxItems and cursor/continuation inputs; no output schema documents total or has-more. P3 was skipped.",
+      "why_it_matters": "Completeness and maximum response size are unknown.",
+      "fix": "Add a documented maximum limit, cursor and output count/has-more contract."
+    },
+    {
+      "id": "F-026",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [],
+      "summary": "Static schema lacks limit/maxItems and cursor/continuation inputs; no output schema documents total or has-more. P3 was skipped.",
+      "why_it_matters": "Completeness and maximum response size are unknown.",
+      "fix": "Add a documented maximum limit, cursor and output count/has-more contract."
+    },
+    {
+      "id": "F-028",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [],
+      "summary": "Static schema lacks limit/maxItems and cursor/continuation inputs; no output schema documents total or has-more. P3 was skipped.",
+      "why_it_matters": "Completeness and maximum response size are unknown.",
+      "fix": "Add a documented maximum limit, cursor and output count/has-more contract."
+    },
+    {
+      "id": "F-030",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_products",
+      "evidence_call_ids": [],
+      "summary": "Static schema lacks limit/maxItems and cursor/continuation inputs; no output schema documents total or has-more. P3 was skipped.",
+      "why_it_matters": "Completeness and maximum response size are unknown.",
+      "fix": "Add a documented maximum limit, cursor and output count/has-more contract."
+    },
+    {
+      "id": "F-032",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_stock",
+      "evidence_call_ids": [],
+      "summary": "Static schema lacks limit/maxItems and cursor/continuation inputs; no output schema documents total or has-more. P3 was skipped.",
+      "why_it_matters": "Completeness and maximum response size are unknown.",
+      "fix": "Add a documented maximum limit, cursor and output count/has-more contract."
+    },
+    {
+      "id": "F-064",
+      "rule_id": "S2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Static: one tool retrieves stock and accepts optional quantity for a stock update.",
+      "why_it_matters": "A nominal read workflow can enter a state-changing path.",
+      "fix": "Split check_stock from adjust_stock."
+    },
+    {
+      "id": "F-065",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Static: consequential destructive action has no documented preview/confirmation field or equivalent safeguard. Runtime behavior was not tested.",
+      "why_it_matters": "An unintended tool call could commit a consequential action.",
+      "fix": "Require a reviewed preview or explicit confirmation token before committing the action."
+    },
+    {
+      "id": "F-066",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static: consequential financial action has no documented preview/confirmation field or equivalent safeguard. Runtime behavior was not tested.",
+      "why_it_matters": "An unintended tool call could commit a consequential action.",
+      "fix": "Require a reviewed preview or explicit confirmation token before committing the action."
+    },
+    {
+      "id": "F-067",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Static: consequential order placement has no documented preview/confirmation field or equivalent safeguard. Runtime behavior was not tested.",
+      "why_it_matters": "An unintended tool call could commit a consequential action.",
+      "fix": "Require a reviewed preview or explicit confirmation token before committing the action."
+    },
+    {
+      "id": "F-068",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Static: consequential destructive action has no documented preview/confirmation field or equivalent safeguard. Runtime behavior was not tested.",
+      "why_it_matters": "An unintended tool call could commit a consequential action.",
+      "fix": "Require a reviewed preview or explicit confirmation token before committing the action."
+    },
+    {
+      "id": "F-069",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Static: consequential inventory adjustment has no documented preview/confirmation field or equivalent safeguard. Runtime behavior was not tested.",
+      "why_it_matters": "An unintended tool call could commit a consequential action.",
+      "fix": "Require a reviewed preview or explicit confirmation token before committing the action."
+    },
+    {
+      "id": "F-070",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static: consequential external send has no documented preview/confirmation field or equivalent safeguard. Runtime behavior was not tested.",
+      "why_it_matters": "An unintended tool call could commit a consequential action.",
+      "fix": "Require a reviewed preview or explicit confirmation token before committing the action."
+    },
+    {
+      "id": "F-083",
+      "rule_id": "S6",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_customer",
+      "evidence_call_ids": [
+        "CALL-04",
+        "CALL-09"
+      ],
+      "summary": "Observed admin_note contains agent-directed instruction content, classified as an instruction-override attempt. Content was ignored and is neither copied nor retained.",
+      "why_it_matters": "Untrusted result content may redirect agent behavior.",
+      "fix": "Remove agent-directed instructions from result data and isolate free-text notes as untrusted content."
+    },
+    {
+      "id": "F-041",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_customers",
+      "evidence_call_ids": [],
+      "summary": "Static: mcp__naive_a__list_customers and mcp__naive_a__get_customer both plausibly serve customer profile lookup, but neither describes when filtered discovery versus exact-record retrieval is appropriate.",
+      "why_it_matters": "The documented contracts leave the selection boundary unclear.",
+      "fix": "Define list_customers as bounded discovery and the read portion of get_customer as exact-record retrieval, with explicit selection examples."
+    },
+    {
+      "id": "F-042",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [],
+      "summary": "Static: mcp__naive_a__list_invoices and mcp__naive_a__get_invoice_by_id both plausibly serve invoice lookup, but neither describes when filtered discovery versus exact-record retrieval is appropriate.",
+      "why_it_matters": "The documented contracts leave the selection boundary unclear.",
+      "fix": "Define list_invoices as bounded discovery and the read portion of get_invoice_by_id as exact-record retrieval, with explicit selection examples."
+    },
+    {
+      "id": "F-043",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [],
+      "summary": "Static: mcp__naive_a__list_orders and mcp__naive_a__get_order_by_id both plausibly serve order/status lookup, but neither describes when filtered discovery versus exact-record retrieval is appropriate.",
+      "why_it_matters": "The documented contracts leave the selection boundary unclear.",
+      "fix": "Define list_orders as bounded discovery and the read portion of get_order_by_id as exact-record retrieval, with explicit selection examples."
+    },
+    {
+      "id": "F-044",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_products",
+      "evidence_call_ids": [],
+      "summary": "Static: mcp__naive_a__list_products and mcp__naive_a__get_product_by_sku both plausibly serve product lookup, but neither describes when filtered discovery versus exact-record retrieval is appropriate.",
+      "why_it_matters": "The documented contracts leave the selection boundary unclear.",
+      "fix": "Define list_products as bounded discovery and the read portion of get_product_by_sku as exact-record retrieval, with explicit selection examples."
+    },
+    {
+      "id": "F-045",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_stock",
+      "evidence_call_ids": [],
+      "summary": "Static: mcp__naive_a__list_stock and mcp__naive_a__get_or_update_stock both plausibly serve stock lookup, but neither describes when filtered discovery versus exact-record retrieval is appropriate.",
+      "why_it_matters": "The documented contracts leave the selection boundary unclear.",
+      "fix": "Define list_stock as bounded discovery and the read portion of get_or_update_stock as exact-record retrieval, with explicit selection examples."
+    },
+    {
+      "id": "F-003",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: orderId has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-005",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: name has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-007",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: amount has no meaningful description; orderId has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-009",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: customerId has no meaningful description; quantity has no meaningful description; sku has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-011",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: name has no meaningful description; quantity has no meaningful description; sku has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-013",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: customerId has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-016",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: invoiceId has only a label. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-018",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: sku has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-020",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: orderId has only a label. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-022",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_product_by_sku",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: sku has only a label. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-034",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: invoiceId has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-036",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__update_customer",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: customerId has no meaningful description; fields has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-038",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: fields has no meaningful description; orderId has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-040",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__update_product",
+      "evidence_call_ids": [],
+      "summary": "Static required-input checklist: fields has no meaningful description; sku has no meaningful description. No domain formats, bounds, allowed values or examples are supplied.",
+      "why_it_matters": "Required values must be guessed and invalid requests become likely.",
+      "fix": "Document every required field with meaningful purpose, format, constraints and a safe synthetic example."
+    },
+    {
+      "id": "F-052",
+      "rule_id": "C1",
+      "severity": "Medium",
+      "tool": "all tools",
+      "evidence_call_ids": [],
+      "summary": "Host-visible serialized definitions total 121477 UTF-8 bytes, approximately 30370 tokens (ceil(bytes/4) estimate). Both identical 20-tool alias catalogs are exposed simultaneously; design is assessed once under identity A.",
+      "why_it_matters": "Repeated endpoint boilerplate and duplicate identity catalogs consume model context.",
+      "fix": "Shorten descriptions, consolidate task tools and avoid exposing duplicate catalogs outside identity testing."
+    },
+    {
+      "id": "F-076",
+      "rule_id": "R2",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [
+        "CALL-05",
+        "CALL-06"
+      ],
+      "summary": "Observed repeatedly: status lookups returned 16 row fields, including internalRoute, warehouseBin, auditTag, sourceSystem, retryCounter, exportMarker and billingSegment.",
+      "why_it_matters": "Unrelated internal fields increase context cost and disclosure.",
+      "fix": "Return compact order number/status/customer fields by default; gate detailed diagnostics separately."
+    },
+    {
+      "id": "F-053",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-054",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-055",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-056",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-057",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-058",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-059",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-060",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-061",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_customer",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-062",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-063",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_product",
+      "evidence_call_ids": [],
+      "summary": "Static host contract: state-changing tool has no model-visible annotation metadata. Whether the gap originates at server or host is unknown.",
+      "why_it_matters": "The agent lacks reliable read-only/destructive/idempotent hints.",
+      "fix": "Expose accurate MCP readOnlyHint, destructiveHint and idempotentHint annotations through the host."
+    },
+    {
+      "id": "F-071",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Static: create or retry-sensitive send contract contains no idempotency key or documented equivalent.",
+      "why_it_matters": "Retries may duplicate records or external sends.",
+      "fix": "Add client-supplied idempotency keys and document replay behavior."
+    },
+    {
+      "id": "F-072",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static: create or retry-sensitive send contract contains no idempotency key or documented equivalent.",
+      "why_it_matters": "Retries may duplicate records or external sends.",
+      "fix": "Add client-supplied idempotency keys and document replay behavior."
+    },
+    {
+      "id": "F-073",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Static: create or retry-sensitive send contract contains no idempotency key or documented equivalent.",
+      "why_it_matters": "Retries may duplicate records or external sends.",
+      "fix": "Add client-supplied idempotency keys and document replay behavior."
+    },
+    {
+      "id": "F-074",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Static: create or retry-sensitive send contract contains no idempotency key or documented equivalent.",
+      "why_it_matters": "Retries may duplicate records or external sends.",
+      "fix": "Add client-supplied idempotency keys and document replay behavior."
+    },
+    {
+      "id": "F-075",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static: create or retry-sensitive send contract contains no idempotency key or documented equivalent.",
+      "why_it_matters": "Retries may duplicate records or external sends.",
+      "fix": "Add client-supplied idempotency keys and document replay behavior."
+    },
+    {
+      "id": "F-001",
+      "rule_id": "T1",
+      "severity": "Medium",
+      "tool": "all tools",
+      "evidence_call_ids": [],
+      "summary": "Static: the 20-tool inventory mirrors customer, order, invoice, product and stock endpoints, including create/get/list/update clusters.",
+      "why_it_matters": "Endpoint selection and multi-step assembly burden the agent.",
+      "fix": "Offer task tools such as find_account, check_order_status and prepare_order with explicit boundaries."
+    },
+    {
+      "id": "F-002",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-004",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-006",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-008",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-010",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-012",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-014",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_customer",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-015",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-017",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-019",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-021",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_product_by_sku",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-023",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_customers",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-025",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-027",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-029",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_products",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-031",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_stock",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-033",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-035",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_customer",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-037",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-039",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_product",
+      "evidence_call_ids": [],
+      "summary": "Static description has no positive task-selection guidance plus exclusion/alternative boundary.",
+      "why_it_matters": "The agent cannot reliably select a safe tool for the user task.",
+      "fix": "Document when to use this tool, required scope, and when to choose a named alternative."
+    },
+    {
+      "id": "F-046",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Static: required orderId is an internal reference. No tool resolves readable order number or customer name to that ID; list_orders only accepts status/fromDate and publishes no output schema.",
+      "why_it_matters": "A user-facing order reference cannot be reliably resolved by the documented inventory.",
+      "fix": "Provide bounded order lookup by readable order number/customer with labeled internal references."
+    },
+    {
+      "id": "F-047",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static: required orderId is an internal reference. No tool resolves readable order number or customer name to that ID; list_orders only accepts status/fromDate and publishes no output schema.",
+      "why_it_matters": "A user-facing order reference cannot be reliably resolved by the documented inventory.",
+      "fix": "Provide bounded order lookup by readable order number/customer with labeled internal references."
+    },
+    {
+      "id": "F-050",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [],
+      "summary": "Static plus sampled list evidence: required invoiceId is opaque; list_invoices accepts customerName but returns only id/status/amount/currency, without invoice/customer labels. No invoice-number resolver exists.",
+      "why_it_matters": "A caller cannot identify which unlabeled invoice ID is the intended invoice.",
+      "fix": "Add a bounded readable invoice-number/customer lookup returning invoice number, customer name and internal ID."
+    },
+    {
+      "id": "F-048",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [],
+      "summary": "Static: required orderId is an internal reference. No tool resolves readable order number or customer name to that ID; list_orders only accepts status/fromDate and publishes no output schema.",
+      "why_it_matters": "A user-facing order reference cannot be reliably resolved by the documented inventory.",
+      "fix": "Provide bounded order lookup by readable order number/customer with labeled internal references."
+    },
+    {
+      "id": "F-051",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Static plus sampled list evidence: required invoiceId is opaque; list_invoices accepts customerName but returns only id/status/amount/currency, without invoice/customer labels. No invoice-number resolver exists.",
+      "why_it_matters": "A caller cannot identify which unlabeled invoice ID is the intended invoice.",
+      "fix": "Add a bounded readable invoice-number/customer lookup returning invoice number, customer name and internal ID."
+    },
+    {
+      "id": "F-049",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Static: required orderId is an internal reference. No tool resolves readable order number or customer name to that ID; list_orders only accepts status/fromDate and publishes no output schema.",
+      "why_it_matters": "A user-facing order reference cannot be reliably resolved by the documented inventory.",
+      "fix": "Provide bounded order lookup by readable order number/customer with labeled internal references."
+    },
+    {
+      "id": "F-077",
+      "rule_id": "R3",
+      "severity": "Low",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [
+        "CALL-03",
+        "CALL-07"
+      ],
+      "summary": "Observed twice: invoice rows expose id/status/amount/currency but no invoice number, customer name or other readable invoice label.",
+      "why_it_matters": "The requested invoice cannot be identified or attributed to a readable customer.",
+      "fix": "Return invoice_number, customer_name and relevant dates alongside status."
+    }
+  ],
+  "not_tested": [
+    {
+      "probe_id": "P1",
+      "reason": "TASK-01 skipped after bounded customer discovery: list_orders has no customer/name/ID filter for the requested scope. TASK-03 skipped: list_invoices lacks unpaid/status and page-size filters. TASK-04 skipped: no read-only prepare/preview tool exists; writes are disabled. TASK-05 attempted twice but invoice responses lack dates/readable labels, so most-recent status cannot be established. TASK-02 had two bounded reads; product name, quantity and reorderPoint support the answer, with unrelated products also returned."
+    },
+    {
+      "probe_id": "P2",
+      "reason": "Partial coverage: malformed date tested once and empty identifiers tested on every read-only by-ID tool, including optional customerId. Empty optional customerId returning null is not E2. Stock tool skipped because it is write-capable. Omitted required fields are host-required and no numeric read bounds exist. No additional unknown-name test was needed after one applicable case per tool."
+    },
+    {
+      "probe_id": "P3",
+      "reason": "All five list schemas lack a documented safe maximum/page size; no unbounded request was sent."
+    },
+    {
+      "probe_id": "P5",
+      "reason": "Writes disabled; all write-capable and destructive tools were excluded. Mutation findings are contract observations only."
+    }
+  ],
+  "run_details": {
+    "environment": "test",
+    "agent": "Codex",
+    "model": "unknown",
+    "date": "2026-11-09",
+    "skill_version": "0.1.0",
+    "target_label": "local synthetic wholesale naive reference server; naive_a / naive_b"
+  },
+  "disclosures": [
+    "Tool output passed through the model provider already used by the agent.",
+    "This is an automated design review, not a security audit.",
+    "Booking link not configured; publisher must set MCP_SAUNA_BOOKING_URL before public release."
+  ]
+}

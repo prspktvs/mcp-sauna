@@ -18,7 +18,7 @@ RULES: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "T1": ("Tool design", "Medium", ("static", "P1")),
     "T2": ("Tool design", "High", ("static", "P1")),
     "T3": ("Tool design", "Medium", ("static",)),
-    "T4": ("Tool design", "High", ("static", "P2")),
+    "T4": ("Tool design", "High", ("static",)),
     "T5": ("Tool design", "Medium", ("static",)),
     "C1": ("Context cost", "Medium", ("static",)),
     "R1": ("Responses", "High", ("static", "P3")),
@@ -31,7 +31,7 @@ RULES: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "S3": ("Safety", "High", ("static", "P5")),
     "S4": ("Safety", "Medium", ("static",)),
     "S5": ("Safety", "Critical", ("P4",)),
-    "S6": ("Safety", "High", ("static", "P6")),
+    "S6": ("Safety", "High", ("static", "P1", "P2", "P3", "P4", "P6")),
 }
 DIMENSIONS = ("Tool design", "Context cost", "Responses", "Errors", "Safety")
 PROBE_DIMENSIONS = {
@@ -122,14 +122,16 @@ def validate_run(data: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, A
     task_ids: set[str] = set()
     for index, task in enumerate(tasks):
         require(isinstance(task, dict), f"tasks[{index}] must be an object")
-        require(set(task) == {"id", "success", "attempts", "tool_calls", "estimated_tokens"}, f"tasks[{index}] has missing or unexpected fields")
+        require(set(task) == {"id", "status", "attempts", "tool_calls", "estimated_tokens"}, f"tasks[{index}] has missing or unexpected fields")
         task_id = string(task["id"], f"tasks[{index}].id")
         require(task_id not in task_ids, f"duplicate task id: {task_id}")
         task_ids.add(task_id)
-        require(isinstance(task["success"], bool), f"tasks[{index}].success must be boolean")
-        require(nonnegative_int(task["attempts"], f"tasks[{index}].attempts") >= 1, f"tasks[{index}].attempts must be at least 1")
+        require(task["status"] in {"success", "failed", "skipped"}, f"tasks[{index}].status must be success, failed, or skipped")
+        attempts = nonnegative_int(task["attempts"], f"tasks[{index}].attempts")
+        require((task["status"] == "skipped" and attempts == 0) or (task["status"] != "skipped" and attempts in {1, 2}), f"tasks[{index}] must have 0 attempts when skipped and 1 or 2 otherwise")
         nonnegative_int(task["tool_calls"], f"tasks[{index}].tool_calls")
         nonnegative_int(task["estimated_tokens"], f"tasks[{index}].estimated_tokens")
+        require(task["status"] == "skipped" or task["tool_calls"] > 0, f"tasks[{index}] cannot be marked attempted without a tool call")
 
     calls = data["calls"]
     require(isinstance(calls, list), "calls must be an array")
@@ -246,12 +248,16 @@ def build_results(data: dict[str, Any]) -> dict[str, Any]:
 
     serialized_definitions = json.dumps(definitions, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     tool_definition_bytes = len(serialized_definitions)
+    attempted_tasks = [task for task in tasks if task["status"] != "skipped"]
+    successful_tasks = sum(1 for task in attempted_tasks if task["status"] == "success")
     metrics = {
         "task_count": len(tasks),
-        "successful_tasks": sum(1 for task in tasks if task["success"]),
-        "task_success_rate": (sum(1 for task in tasks if task["success"]) / len(tasks)) if tasks else None,
-        "average_tool_calls_per_task": (sum(task["tool_calls"] for task in tasks) / len(tasks)) if tasks else None,
-        "average_estimated_tokens_per_task": (sum(task["estimated_tokens"] for task in tasks) / len(tasks)) if tasks else None,
+        "attempted_tasks": len(attempted_tasks),
+        "skipped_tasks": len(tasks) - len(attempted_tasks),
+        "successful_tasks": successful_tasks,
+        "task_success_rate": (successful_tasks / len(attempted_tasks)) if attempted_tasks else None,
+        "average_tool_calls_per_task": (sum(task["tool_calls"] for task in attempted_tasks) / len(attempted_tasks)) if attempted_tasks else None,
+        "average_estimated_tokens_per_task": (sum(task["estimated_tokens"] for task in attempted_tasks) / len(attempted_tasks)) if attempted_tasks else None,
         "tool_definition_bytes": tool_definition_bytes,
         "estimated_tool_definition_tokens": math.ceil(tool_definition_bytes / 4),
         "unsafe_behaviors_found": sum(1 for finding in findings if finding["rule_id"].startswith("S")),
@@ -342,7 +348,7 @@ def markdown_report(results: dict[str, Any]) -> str:
         for reason in reasons:
             lines.append(f"| | | Incomplete: {reason} | |")
     success_rate = metrics["task_success_rate"]
-    success_text = "not measured" if success_rate is None else f"{metrics['successful_tasks']}/{metrics['task_count']} ({success_rate:.0%})"
+    success_text = "not measured" if success_rate is None else f"{metrics['successful_tasks']}/{metrics['attempted_tasks']} attempted ({success_rate:.0%}); {metrics['skipped_tasks']} skipped"
     avg_calls = "not measured" if metrics["average_tool_calls_per_task"] is None else f"{metrics['average_tool_calls_per_task']:.1f}"
     avg_tokens = "not measured" if metrics["average_estimated_tokens_per_task"] is None else f"{metrics['average_estimated_tokens_per_task']:.0f} (estimate)"
     lines += [

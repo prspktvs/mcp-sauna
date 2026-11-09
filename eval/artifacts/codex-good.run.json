@@ -1,0 +1,564 @@
+{
+  "schema_version": 1,
+  "run": {
+    "environment": "test",
+    "agent": "Codex",
+    "model": "unknown",
+    "date": "2026-11-09",
+    "skill_version": "0.1.0",
+    "target_label": "Local synthetic reference server: good_a (A), good_b (B); identical design, two configured identities"
+  },
+  "tool_definitions": [
+    {
+      "name": "mcp__good_a__check_stock",
+      "description": "Check stock: Use this to check available quantity and reorder point for a product by name or SKU. Do not use this tool for changing stock or placing an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_a__check_stock(args: {\n  // Product name or SKU, e.g. Harju 80 sauna heater\n  product: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_a__find_account",
+      "description": "Find account: Use this to resolve a customer from its legal or trading name and view its account status. Do not use this tool for searching invoices or changing an account. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_a__find_account(args: {\n  // Customer legal or trading name, e.g. Kelo Hotels Oy\n  name: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_a__place_order",
+      "description": "Place reviewed order: Use this only after the user has reviewed a preview and explicitly asked to place it. Do not use this tool for drafting, editing, or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_a__place_order(args: {\n  // Required confirmation value after the user approves this exact preview\n  confirmation: \"CONFIRM\";\n  // Client-generated key reused for an exact retry, at least 8 characters\n  idempotencyKey: string;\n  // Preview ID returned by preview_order, e.g. PREVIEW-...\n  previewId: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_a__preview_order",
+      "description": "Preview order: Use this to calculate a draft order and review its customer, items, and total before placement. Do not use this tool for placing or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_a__preview_order(args: {\n  // Customer legal or trading name, e.g. Kelo Hotels Oy\n  customer: string;\n  // Whole-unit quantity from 1 to 50\n  quantity: number;\n  // Product SKU, e.g. HARJU-80\n  sku: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_a__search_invoices",
+      "description": "Search invoices: Use this to find invoices by readable number, customer name, or payment status. Do not use this tool for creating, sending, or paying an invoice. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_a__search_invoices(args: {\n  // Continuation cursor returned by a previous page\n  cursor?: string;\n  // Page size from 1 to 50\n  limit?: number;\n  // Readable invoice number or customer name\n  query?: string;\n  // Payment state to filter by\n  status?: \"paid\" | \"unpaid\" | \"overdue\";\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_a__search_orders",
+      "description": "Search orders: Use this to find order status by order number, customer name, or date range. Do not use this tool for creating, changing, or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_a__search_orders(args: {\n  // Continuation cursor returned by a previous page\n  cursor?: string;\n  // Inclusive start date in YYYY-MM-DD format, e.g. 2026-10-01\n  fromDate?: string;\n  // Page size from 1 to 50\n  limit?: number;\n  // Readable order number or customer name; omit to list recent orders\n  query?: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_b__check_stock",
+      "description": "Check stock: Use this to check available quantity and reorder point for a product by name or SKU. Do not use this tool for changing stock or placing an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_b__check_stock(args: {\n  // Product name or SKU, e.g. Harju 80 sauna heater\n  product: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_b__find_account",
+      "description": "Find account: Use this to resolve a customer from its legal or trading name and view its account status. Do not use this tool for searching invoices or changing an account. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_b__find_account(args: {\n  // Customer legal or trading name, e.g. Kelo Hotels Oy\n  name: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_b__place_order",
+      "description": "Place reviewed order: Use this only after the user has reviewed a preview and explicitly asked to place it. Do not use this tool for drafting, editing, or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_b__place_order(args: {\n  // Required confirmation value after the user approves this exact preview\n  confirmation: \"CONFIRM\";\n  // Client-generated key reused for an exact retry, at least 8 characters\n  idempotencyKey: string;\n  // Preview ID returned by preview_order, e.g. PREVIEW-...\n  previewId: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_b__preview_order",
+      "description": "Preview order: Use this to calculate a draft order and review its customer, items, and total before placement. Do not use this tool for placing or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_b__preview_order(args: {\n  // Customer legal or trading name, e.g. Kelo Hotels Oy\n  customer: string;\n  // Whole-unit quantity from 1 to 50\n  quantity: number;\n  // Product SKU, e.g. HARJU-80\n  sku: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_b__search_invoices",
+      "description": "Search invoices: Use this to find invoices by readable number, customer name, or payment status. Do not use this tool for creating, sending, or paying an invoice. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_b__search_invoices(args: {\n  // Continuation cursor returned by a previous page\n  cursor?: string;\n  // Page size from 1 to 50\n  limit?: number;\n  // Readable invoice number or customer name\n  query?: string;\n  // Payment state to filter by\n  status?: \"paid\" | \"unpaid\" | \"overdue\";\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    },
+    {
+      "name": "mcp__good_b__search_orders",
+      "description": "Search orders: Use this to find order status by order number, customer name, or date range. Do not use this tool for creating, changing, or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__good_b__search_orders(args: {\n  // Continuation cursor returned by a previous page\n  cursor?: string;\n  // Inclusive start date in YYYY-MM-DD format, e.g. 2026-10-01\n  fromDate?: string;\n  // Page size from 1 to 50\n  limit?: number;\n  // Readable order number or customer name; omit to list recent orders\n  query?: string;\n}): Promise<CallToolResult>; };\n```",
+      "input_schema": null,
+      "output_schema": null,
+      "annotations": null
+    }
+  ],
+  "tasks": [
+    {
+      "id": "TASK-01",
+      "status": "success",
+      "attempts": 2,
+      "tool_calls": 3,
+      "estimated_tokens": 897
+    },
+    {
+      "id": "TASK-02",
+      "status": "success",
+      "attempts": 2,
+      "tool_calls": 2,
+      "estimated_tokens": 65
+    },
+    {
+      "id": "TASK-03",
+      "status": "success",
+      "attempts": 1,
+      "tool_calls": 1,
+      "estimated_tokens": 62
+    },
+    {
+      "id": "TASK-04",
+      "status": "skipped",
+      "attempts": 0,
+      "tool_calls": 0,
+      "estimated_tokens": 0
+    },
+    {
+      "id": "TASK-05",
+      "status": "failed",
+      "attempts": 2,
+      "tool_calls": 2,
+      "estimated_tokens": 44
+    },
+    {
+      "id": "TASK-06",
+      "status": "skipped",
+      "attempts": 0,
+      "tool_calls": 0,
+      "estimated_tokens": 0
+    },
+    {
+      "id": "TASK-07",
+      "status": "failed",
+      "attempts": 2,
+      "tool_calls": 2,
+      "estimated_tokens": 44
+    },
+    {
+      "id": "TASK-08",
+      "status": "failed",
+      "attempts": 2,
+      "tool_calls": 2,
+      "estimated_tokens": 44
+    }
+  ],
+  "calls": [
+    {
+      "id": "CALL-01",
+      "phase": "P1",
+      "task_id": "TASK-01",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [],
+      "result_items": 0,
+      "result_bytes": 0,
+      "estimated_tokens": 0,
+      "outcome": "error",
+      "error_class": "client_processing"
+    },
+    {
+      "id": "CALL-02",
+      "phase": "P1",
+      "task_id": "TASK-01",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "orders",
+        "count",
+        "nextCursor",
+        "orders.orderNumber",
+        "orders.status",
+        "orders.customerName",
+        "orders.createdAt"
+      ],
+      "result_items": 1,
+      "result_bytes": 211,
+      "estimated_tokens": 53,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-03",
+      "phase": "P1",
+      "task_id": "TASK-02",
+      "identity": null,
+      "tool": "mcp__good_a__check_stock",
+      "argument_fields": [
+        "product"
+      ],
+      "result_fields": [
+        "items",
+        "count"
+      ],
+      "result_items": 0,
+      "result_bytes": 65,
+      "estimated_tokens": 17,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-04",
+      "phase": "P1",
+      "task_id": "TASK-02",
+      "identity": null,
+      "tool": "mcp__good_a__check_stock",
+      "argument_fields": [
+        "product"
+      ],
+      "result_fields": [
+        "items",
+        "count",
+        "items.sku",
+        "items.name",
+        "items.quantity",
+        "items.reorderPoint",
+        "items.warehouse"
+      ],
+      "result_items": 1,
+      "result_bytes": 192,
+      "estimated_tokens": 48,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-05",
+      "phase": "P1",
+      "task_id": "TASK-03",
+      "identity": null,
+      "tool": "mcp__good_a__search_invoices",
+      "argument_fields": [
+        "status",
+        "limit"
+      ],
+      "result_fields": [
+        "invoices",
+        "count",
+        "nextCursor",
+        "invoices.invoiceNumber",
+        "invoices.customerName",
+        "invoices.status",
+        "invoices.amount",
+        "invoices.currency",
+        "invoices.dueDate"
+      ],
+      "result_items": 1,
+      "result_bytes": 246,
+      "estimated_tokens": 62,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-06",
+      "phase": "P1",
+      "task_id": "TASK-05",
+      "identity": null,
+      "tool": "mcp__good_a__search_invoices",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "invoices",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 88,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-07",
+      "phase": "P1",
+      "task_id": "TASK-07",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "orders",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 86,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-08",
+      "phase": "P1",
+      "task_id": "TASK-08",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "orders",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 86,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-09",
+      "phase": "P1",
+      "task_id": "TASK-05",
+      "identity": null,
+      "tool": "mcp__good_a__search_invoices",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "invoices",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 88,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-10",
+      "phase": "P1",
+      "task_id": "TASK-07",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "orders",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 86,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-11",
+      "phase": "P1",
+      "task_id": "TASK-08",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "orders",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 86,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-12",
+      "phase": "P3",
+      "task_id": "TASK-01",
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "orders",
+        "count",
+        "nextCursor",
+        "orders.orderNumber",
+        "orders.status",
+        "orders.customerName",
+        "orders.createdAt"
+      ],
+      "result_items": 27,
+      "result_bytes": 3374,
+      "estimated_tokens": 844,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-13",
+      "phase": "P2",
+      "task_id": null,
+      "identity": null,
+      "tool": "mcp__good_a__search_orders",
+      "argument_fields": [
+        "query",
+        "fromDate",
+        "limit"
+      ],
+      "result_fields": [
+        "error",
+        "error.code",
+        "error.message"
+      ],
+      "result_items": 0,
+      "result_bytes": 168,
+      "estimated_tokens": 42,
+      "outcome": "error",
+      "error_class": "validation"
+    },
+    {
+      "id": "CALL-14",
+      "phase": "P2",
+      "task_id": null,
+      "identity": null,
+      "tool": "mcp__good_a__search_invoices",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "content.type",
+        "content.text",
+        "isError"
+      ],
+      "result_items": 0,
+      "result_bytes": 184,
+      "estimated_tokens": 46,
+      "outcome": "error",
+      "error_class": "validation"
+    },
+    {
+      "id": "CALL-15",
+      "phase": "P4",
+      "task_id": null,
+      "identity": "A",
+      "tool": "mcp__good_a__search_invoices",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "invoices",
+        "count",
+        "nextCursor",
+        "invoices.invoiceNumber",
+        "invoices.customerName",
+        "invoices.status",
+        "invoices.amount",
+        "invoices.currency",
+        "invoices.dueDate"
+      ],
+      "result_items": 1,
+      "result_bytes": 246,
+      "estimated_tokens": 62,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-16",
+      "phase": "P4",
+      "task_id": null,
+      "identity": "B",
+      "tool": "mcp__good_b__search_invoices",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "invoices",
+        "count",
+        "nextCursor"
+      ],
+      "result_items": 0,
+      "result_bytes": 88,
+      "estimated_tokens": 22,
+      "outcome": "success",
+      "error_class": null
+    },
+    {
+      "id": "CALL-17",
+      "phase": "P3",
+      "task_id": null,
+      "identity": null,
+      "tool": "mcp__good_a__search_invoices",
+      "argument_fields": [
+        "query",
+        "limit"
+      ],
+      "result_fields": [
+        "invoices",
+        "count",
+        "nextCursor",
+        "invoices.invoiceNumber",
+        "invoices.customerName",
+        "invoices.status",
+        "invoices.amount",
+        "invoices.currency",
+        "invoices.dueDate"
+      ],
+      "result_items": 1,
+      "result_bytes": 246,
+      "estimated_tokens": 62,
+      "outcome": "success",
+      "error_class": null
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-01",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__good_a__place_order",
+      "evidence_call_ids": [],
+      "summary": "Static, agent-visible contract limitation: place_order clearly changes state, but the host exposes no mutation annotations for either alias. Whether the gap originates at the server or host is unknown.",
+      "why_it_matters": "The agent cannot inspect readOnlyHint, destructiveHint, or idempotentHint to help classify placement. The reviewed-preview and confirmation boundaries remain documented.",
+      "fix": "Expose accurate placement annotations to the model through the server and host: readOnlyHint false, with destructiveHint and idempotentHint matching the actual placement and exact-retry behavior."
+    }
+  ],
+  "skipped_probes": [
+    {
+      "probe_id": "P1",
+      "reason": "Partial: TASK-04 skipped because preview persistence is unknown, so it is conservatively classified write and writes are disabled. TASK-06 skipped because find_account accepts readable names, with no documented customer-ID resolver. TASK-05, TASK-07 and TASK-08 had no matching records after one retry each; no E2 inference from valid empty results."
+    },
+    {
+      "probe_id": "P2",
+      "reason": "Partial: supported narrow malformed-date validation was observed. The host rejected an out-of-range limit before server execution; no validation bypass was attempted. Omitted required fields, wrong types and enum violations were not forced. No dedicated read-by-ID/SKU-only contract was exposed; empty optional filters were not tested."
+    },
+    {
+      "probe_id": "P5",
+      "reason": "All write probes disabled by the user. preview_order conservatively classified write because persistence is unspecified; place_order classified consequential write. Neither was invoked. Preview enforcement and idempotency remain behaviorally untested."
+    }
+  ]
+}

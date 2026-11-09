@@ -1,27 +1,36 @@
 {
   "skill_version": "0.1.0",
-  "status": "not_release_validated",
+  "status": "partial_codex_validation",
   "agents": [
     {
       "name": "Codex",
-      "status": "not_run",
-      "reason": "No separate Codex run had the reference MCP servers connected.",
-      "full_20_tool_review_seconds": null
+      "host_version": "codex-cli 0.166.0",
+      "status": "reference_checks_passed",
+      "reason": "Two naive runs passed all seeded checks and matched grade/high-severity findings. One good-server run produced no High/Critical findings. MCP annotations were unavailable to the host, producing one Medium S1 limitation.",
+      "naive_runs": [
+        {"artifacts": "eval/artifacts/codex-naive-1.*", "elapsed_seconds": 108, "seeded_findings_pass": true},
+        {"artifacts": "eval/artifacts/codex-naive-2.*", "elapsed_seconds": 126, "seeded_findings_pass": true}
+      ],
+      "good_run": {"artifacts": "eval/artifacts/codex-good.*", "elapsed_seconds": 110, "high_or_critical_false_positives": 0},
+      "full_20_tool_review_seconds": 108
     },
     {
       "name": "Claude Code",
+      "host_version": "2.1.319",
       "status": "blocked_auth",
       "reason": "Claude Code CLI is installed, but claude auth status reported loggedIn=false.",
       "full_20_tool_review_seconds": null
     },
     {
       "name": "GitHub Copilot",
+      "host_version": null,
       "status": "blocked_host_unavailable",
       "reason": "The GitHub Copilot CLI/host was not available in this environment.",
       "full_20_tool_review_seconds": null
     }
   ],
-  "repeatability": "not_run",
-  "seeded_naive_findings": "not_run",
-  "good_server_high_false_positives": "not_run"
+  "repeatability": "pass_in_codex",
+  "seeded_naive_findings": "pass_in_codex",
+  "good_server_high_false_positives": "pass_in_codex",
+  "three_agent_release_criterion": "not_met"
 }

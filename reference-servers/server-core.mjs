@@ -95,7 +95,7 @@ function createNaive(server) {
   // invoice list intentionally provides no readable-number lookup for T5.
 }
 
-function createGood(server, identity) {
+function createGood(server, identity, allowWrites) {
   const read = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
   const write = { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 
@@ -159,6 +159,7 @@ function createGood(server, identity) {
     idempotencyKey: z.string().min(8).describe("Client-generated key reused for an exact retry, at least 8 characters"),
     confirmation: z.literal("CONFIRM").describe("Required confirmation value after the user approves this exact preview"),
   }, async ({ previewId, idempotencyKey, confirmation }) => {
+    if (!allowWrites) return asToolResult({ error: { code: "writes_disabled", message: "Reference-server writes are disabled. Enable SAUNA_ALLOW_WRITES=1 only for an approved synthetic-data write probe." } }, true);
     if (confirmation !== "CONFIRM") return asToolResult({ error: { code: "confirmation_required", message: "Review the preview and ask the user to confirm before placing the order." } }, true);
     if (placedByKey.has(idempotencyKey)) return placedByKey.get(idempotencyKey);
     let preview;
@@ -173,10 +174,10 @@ function createGood(server, identity) {
   }, write);
 }
 
-export function createReferenceServer({ variant = "good", identity = "A" } = {}) {
+export function createReferenceServer({ variant = "good", identity = "A", allowWrites = false } = {}) {
   if (!["naive", "good"].includes(variant)) throw new Error("SAUNA_VARIANT must be naive or good");
   const server = new McpServer({ name: `mcp-sauna-${variant}-reference`, version: "0.1.0" });
   if (variant === "naive") createNaive(server);
-  else createGood(server, identity);
+  else createGood(server, identity, allowWrites);
   return server;
 }

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "skill_version": "0.1.0",
+  "summary": {
+    "overall_grade": "incomplete",
+    "verdict": "The review is incomplete; skipped probes are not counted as passes.",
+    "top_fixes": [
+      {
+        "rule_id": "S1",
+        "tool": "mcp__good_a__place_order",
+        "fix": "Expose accurate placement annotations to the model through the server and host: readOnlyHint false, with destructiveHint and idempotentHint matching the actual placement and exact-retry behavior."
+      }
+    ]
+  },
+  "scorecard": {
+    "Tool design": {
+      "grade": "A",
+      "status": "incomplete",
+      "finding_count": 0,
+      "incomplete_reasons": [
+        "P1 skipped: Partial: TASK-04 skipped because preview persistence is unknown, so it is conservatively classified write and writes are disabled. TASK-06 skipped because find_account accepts readable names, with no documented customer-ID resolver. TASK-05, TASK-07 and TASK-08 had no matching records after one retry each; no E2 inference from valid empty results."
+      ]
+    },
+    "Context cost": {
+      "grade": "A",
+      "status": "complete",
+      "finding_count": 0,
+      "incomplete_reasons": []
+    },
+    "Responses": {
+      "grade": "A",
+      "status": "incomplete",
+      "finding_count": 0,
+      "incomplete_reasons": [
+        "P1 skipped: Partial: TASK-04 skipped because preview persistence is unknown, so it is conservatively classified write and writes are disabled. TASK-06 skipped because find_account accepts readable names, with no documented customer-ID resolver. TASK-05, TASK-07 and TASK-08 had no matching records after one retry each; no E2 inference from valid empty results."
+      ]
+    },
+    "Errors": {
+      "grade": "A",
+      "status": "incomplete",
+      "finding_count": 0,
+      "incomplete_reasons": [
+        "P2 skipped: Partial: supported narrow malformed-date validation was observed. The host rejected an out-of-range limit before server execution; no validation bypass was attempted. Omitted required fields, wrong types and enum violations were not forced. No dedicated read-by-ID/SKU-only contract was exposed; empty optional filters were not tested."
+      ]
+    },
+    "Safety": {
+      "grade": "C",
+      "status": "incomplete",
+      "finding_count": 1,
+      "incomplete_reasons": [
+        "P5 skipped: All write probes disabled by the user. preview_order conservatively classified write because persistence is unspecified; place_order classified consequential write. Neither was invoked. Preview enforcement and idempotency remain behaviorally untested."
+      ]
+    }
+  },
+  "metrics": {
+    "task_count": 8,
+    "attempted_tasks": 6,
+    "skipped_tasks": 2,
+    "successful_tasks": 3,
+    "task_success_rate": 0.5,
+    "average_tool_calls_per_task": 2.0,
+    "average_estimated_tokens_per_task": 192.66666666666666,
+    "tool_definition_bytes": 10511,
+    "estimated_tool_definition_tokens": 2628,
+    "unsafe_behaviors_found": 1,
+    "total_tool_calls": 17,
+    "token_estimate_method": "Provider usage when available; otherwise ceil(UTF-8 bytes / 4). Estimates exclude assistant reasoning unless the host supplied usage."
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__good_a__place_order",
+      "evidence_call_ids": [],
+      "summary": "Static, agent-visible contract limitation: place_order clearly changes state, but the host exposes no mutation annotations for either alias. Whether the gap originates at the server or host is unknown.",
+      "why_it_matters": "The agent cannot inspect readOnlyHint, destructiveHint, or idempotentHint to help classify placement. The reviewed-preview and confirmation boundaries remain documented.",
+      "fix": "Expose accurate placement annotations to the model through the server and host: readOnlyHint false, with destructiveHint and idempotentHint matching the actual placement and exact-retry behavior."
+    }
+  ],
+  "not_tested": [
+    {
+      "probe_id": "P1",
+      "reason": "Partial: TASK-04 skipped because preview persistence is unknown, so it is conservatively classified write and writes are disabled. TASK-06 skipped because find_account accepts readable names, with no documented customer-ID resolver. TASK-05, TASK-07 and TASK-08 had no matching records after one retry each; no E2 inference from valid empty results."
+    },
+    {
+      "probe_id": "P2",
+      "reason": "Partial: supported narrow malformed-date validation was observed. The host rejected an out-of-range limit before server execution; no validation bypass was attempted. Omitted required fields, wrong types and enum violations were not forced. No dedicated read-by-ID/SKU-only contract was exposed; empty optional filters were not tested."
+    },
+    {
+      "probe_id": "P5",
+      "reason": "All write probes disabled by the user. preview_order conservatively classified write because persistence is unspecified; place_order classified consequential write. Neither was invoked. Preview enforcement and idempotency remain behaviorally untested."
+    }
+  ],
+  "run_details": {
+    "environment": "test",
+    "agent": "Codex",
+    "model": "unknown",
+    "date": "2026-11-09",
+    "skill_version": "0.1.0",
+    "target_label": "Local synthetic reference server: good_a (A), good_b (B); identical design, two configured identities"
+  },
+  "disclosures": [
+    "Tool output passed through the model provider already used by the agent.",
+    "This is an automated design review, not a security audit.",
+    "Booking link not configured; publisher must set MCP_SAUNA_BOOKING_URL before public release."
+  ]
+}

@@ -10,3 +10,9 @@ tasks:
     request: Prepare an order for two Harju 80 sauna heaters for Kelo Hotels Oy, but do not place it.
   - id: TASK-05
     request: Find the most recent invoice for Harju Building Supply Oy and say whether it is paid.
+  - id: TASK-06
+    request: Check the test customer profile for customer ID CUS-100.
+  - id: TASK-07
+    request: Check the status of test order ID ORD-1001.
+  - id: TASK-08
+    request: Check the status of test order ID ORD-1002.

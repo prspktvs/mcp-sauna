@@ -26,6 +26,7 @@ Flag a cluster of tools that mirrors CRUD/API endpoints one-to-one (for example,
 Flag two or more tools whose documented purpose and schemas plausibly serve the same user request without explaining when to choose each. Identify the overlap and the missing boundary. Similar subject matter alone is not enough.
 
 - Bad: `search_orders` and `list_orders` accept the same filters and return the same records, with no distinction.
+- Bad: `list_orders` and `get_order_by_id` are both endpoint-style order lookup tools, but neither description says when to use the broad list versus the single-record lookup or gives a safe task boundary.
 - Good: `search_orders` finds existing records; `preview_order` computes a draft and does not place it.
 
 ### T3 — Missing use boundaries · Medium · Static
@@ -47,6 +48,7 @@ Flag a required parameter whose description omits meaningful format, constraints
 Flag a tool requiring an opaque internal ID when the inventory contains no way to find that ID from a readable name or user-facing identifier. Confirm from the complete tool inventory before reporting.
 
 - Bad: `get_invoice` requires `invoiceRowId`, but no tool resolves that ID from an invoice number.
+- Bad: `list_invoices` returns opaque IDs without customer or invoice labels, while `get_invoice_by_id` requires one of those opaque IDs; there is no readable identifier lookup path.
 - Good: `search_invoices` accepts a customer name and returns invoice number, customer name, and any necessary internal reference.
 
 ## Context cost (C)
@@ -92,9 +94,10 @@ Flag an observed failure that exposes only a raw status/stack trace or otherwise
 
 ### E2 — Failure disguised as empty result · High · Probe
 
-Flag when a known invalid input or simulated failure is reported as a successful empty result, making failure indistinguishable from “no matches.” Do not infer this from an empty result alone; establish that the input should fail.
+Flag when a known invalid input or simulated failure is reported as a successful empty result, making failure indistinguishable from “no matches.” Do not infer this from an empty result alone; establish that the input should fail. An empty value on a required identifier input can be tested as a missing identifier when the tool contract identifies the field as an ID/SKU; a successful `null` or empty collection for that case is E2 because the missing required identifier is indistinguishable from no match. An empty optional filter, or a syntactically valid unknown ID, is not by itself an invalid-input case.
 
 - Bad: an omitted mandatory record ID returns `{items: []}` with success.
+- Bad: a required `orderId: string` accepts `""` and returns `{orders: []}` as success.
 - Good: it returns a structured `missing_required_field` error; a valid query with no matches may still return an empty list.
 
 ## Safety (S)
@@ -115,7 +118,7 @@ Flag a single tool that both retrieves information and changes state. Identify t
 
 ### S3 — Risky write without a preview/confirmation boundary · High · Static + probe
 
-Flag a consequential write with no documented preview, confirmation, or equivalent safeguard. A probe may assess the safeguard only when write probes are enabled and the user confirms each exact call.
+Flag a consequential write with no documented preview, confirmation, or equivalent safeguard. Consequential actions include order placement, inventory adjustment, financial actions, external sends, and irreversible or destructive operations. Routine reversible edits or additions to internal records do not meet S3 by default; assess them under S4 when retry-sensitive. A probe may assess the safeguard only when write probes are enabled and the user confirms each exact call.
 
 - Bad: `place_order` immediately commits whatever arguments the model sends.
 - Good: `preview_order` returns a draft; `place_order` requires the reviewed preview and explicit confirmation.

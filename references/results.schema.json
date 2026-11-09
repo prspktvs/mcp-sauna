@@ -30,9 +30,11 @@
     },
     "metrics": {
       "type": "object", "additionalProperties": false,
-      "required": ["task_count", "successful_tasks", "task_success_rate", "average_tool_calls_per_task", "average_estimated_tokens_per_task", "tool_definition_bytes", "estimated_tool_definition_tokens", "unsafe_behaviors_found", "total_tool_calls", "token_estimate_method"],
+      "required": ["task_count", "attempted_tasks", "skipped_tasks", "successful_tasks", "task_success_rate", "average_tool_calls_per_task", "average_estimated_tokens_per_task", "tool_definition_bytes", "estimated_tool_definition_tokens", "unsafe_behaviors_found", "total_tool_calls", "token_estimate_method"],
       "properties": {
         "task_count": {"type": "integer", "minimum": 0},
+        "attempted_tasks": {"type": "integer", "minimum": 0},
+        "skipped_tasks": {"type": "integer", "minimum": 0},
         "successful_tasks": {"type": "integer", "minimum": 0},
         "task_success_rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
         "average_tool_calls_per_task": {"type": ["number", "null"], "minimum": 0},

@@ -13,6 +13,11 @@ from typing import Any
 SEVERITY = {"Low": 1, "Medium": 2, "High": 3, "Critical": 4}
 
 
+def tool_matches(observed: str | None, expected: str) -> bool:
+    """Match fixture tool names as exposed directly or through a host wrapper."""
+    return observed == expected or (isinstance(observed, str) and observed.endswith(f"__{expected}"))
+
+
 def load(path: Path) -> dict[str, Any]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -37,14 +42,14 @@ def main() -> int:
         print(f"reference eval: {exc}", file=sys.stderr)
         return 2
 
-    observed = {(item.get("rule_id"), item.get("tool")): item for item in findings if isinstance(item, dict)}
+    observed = [item for item in findings if isinstance(item, dict)]
     problems: list[str] = []
     if args.variant == "naive":
         for rule_id, tool in expectations["required_findings"]:
-            if (rule_id, tool) not in observed:
+            if not any(item.get("rule_id") == rule_id and tool_matches(item.get("tool"), tool) for item in observed):
                 problems.append(f"missing seeded finding {rule_id} on {tool}")
         for rule_id, minimum in expectations["required_severity_at_least"].items():
-            matching = [item for (observed_rule, _), item in observed.items() if observed_rule == rule_id]
+            matching = [item for item in observed if item.get("rule_id") == rule_id]
             if not any(SEVERITY.get(item.get("severity"), 0) >= SEVERITY[minimum] for item in matching):
                 problems.append(f"{rule_id} must be reported at {minimum} severity or higher")
         skipped_ids = {item.get("probe_id") for item in report.get("not_tested", []) if isinstance(item, dict)}

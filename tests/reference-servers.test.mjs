@@ -6,8 +6,8 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { createReferenceServer } from "../reference-servers/server-core.mjs";
 
-async function connected(variant, identity = "A") {
-  const server = createReferenceServer({ variant, identity });
+async function connected(variant, identity = "A", allowWrites = false) {
+  const server = createReferenceServer({ variant, identity, allowWrites });
   const client = new Client({ name: "mcp-sauna-fixture-test", version: "0.1.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -59,7 +59,7 @@ test("good reference paginates, documents annotations, and isolates test identit
 });
 
 test("good reference enforces preview confirmation and idempotency", async () => {
-  const { client, server } = await connected("good");
+  const { client, server } = await connected("good", "A", true);
   try {
     const preview = await client.callTool({ name: "preview_order", arguments: { customer: "Kelo Hotels Oy", sku: "HARJU-80", quantity: 2 } });
     const previewResult = JSON.parse(preview.content[0].text);
@@ -67,6 +67,18 @@ test("good reference enforces preview confirmation and idempotency", async () =>
     const first = await client.callTool({ name: "place_order", arguments: args });
     const second = await client.callTool({ name: "place_order", arguments: args });
     assert.equal(JSON.parse(first.content[0].text).orderNumber, JSON.parse(second.content[0].text).orderNumber);
+  } finally {
+    await client.close();
+    await server.close();
+  }
+});
+
+test("reference writes are disabled unless explicitly enabled", async () => {
+  const { client, server } = await connected("good");
+  try {
+    const result = await client.callTool({ name: "place_order", arguments: { previewId: "PREVIEW-invalid", idempotencyKey: "sauna-test-key-02", confirmation: "CONFIRM" } });
+    assert.equal(result.isError, true);
+    assert.match(result.content[0].text, /writes_disabled/);
   } finally {
     await client.close();
     await server.close();

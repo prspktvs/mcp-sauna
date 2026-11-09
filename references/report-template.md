@@ -27,7 +27,8 @@ Use this shape (all top-level fields required unless noted):
     }
   ],
   "tasks": [
-    {"id": "TASK-01", "success": true, "attempts": 1, "tool_calls": 2, "estimated_tokens": 340}
+    {"id": "TASK-01", "status": "success", "attempts": 1, "tool_calls": 2, "estimated_tokens": 340},
+    {"id": "TASK-02", "status": "skipped", "attempts": 0, "tool_calls": 0, "estimated_tokens": 0}
   ],
   "calls": [
     {
@@ -65,7 +66,7 @@ Use this shape (all top-level fields required unless noted):
 
 Allowed call `outcome` values: `success`, `error`, `skipped`. `phase` is `static` or `P1`–`P6`. Tool definitions are needed only for C1/static evidence; they are not copied to the final report. Each call entry stores field names and sizes/counts, never argument or result values. Use `error_class` such as `validation`, `not_found`, `permission`, or `transport`; do not store raw error text.
 
-`identity` is `A` or `B` only for a P4 call through the corresponding configured test connection; otherwise it is null. `estimated_tokens` uses provider usage if exposed. Otherwise estimate from UTF-8 bytes divided by four, round up, and label aggregate metrics as estimates. Avoid false precision.
+`identity` is `A` or `B` only for a P4 call through the corresponding configured test connection; otherwise it is null. Task `status` is `success`, `failed`, or `skipped`. A skipped task has zero attempts and is excluded from the success-rate denominator and per-task averages; attempted tasks have one or two attempts. `estimated_tokens` uses provider usage if exposed. Otherwise estimate from UTF-8 bytes divided by four, round up, and label aggregate metrics as estimates. Avoid false precision.
 
 ## Report layout
 
@@ -73,7 +74,7 @@ The generated Markdown report contains:
 
 1. Summary: overall grade, one-line verdict, and up to three prioritized fixes.
 2. Scorecard: grades for Tool design (T), Context cost (C), Responses (R), Errors (E), and Safety (S), plus complete/incomplete status.
-3. Metrics: task success rate, average tool calls and estimated tokens per task, estimated tool-definition tokens, unsafe behaviors found, and total calls.
+3. Metrics: task success rate among attempted tasks, attempted and skipped task counts, average tool calls and estimated tokens per attempted task, estimated tool-definition tokens, unsafe behaviors found, and total calls.
 4. Findings by severity: rule ID, tool, call references, issue, impact, and fix.
 5. Not tested: skipped probes and reason.
 6. Run details: environment, agent, model, date, call count, and skill version.

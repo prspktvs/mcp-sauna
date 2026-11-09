@@ -32,3 +32,9 @@ Run procedure:
 7. Review the complete sanitized findings. Record any host-specific changes; a portability pass requires no changes to `SKILL.md`, references, or scripts.
 
 The initial release report must label any unrun host as **not tested**. Never claim three-agent compatibility before all three rows have evidence.
+
+## Current local evidence
+
+Codex CLI 0.166.0 completed two naive-server runs with all seeded findings present. `grade.py --compare` reported the same incomplete overall grade and identical High/Critical finding set. A good-server run had zero High/Critical false positives. All three Codex runs stayed under 900 seconds and made no write or destructive calls. The host did not expose MCP annotations, so the report includes one Medium S1 limitation.
+
+Claude Code is **not tested** because the installed CLI was unauthenticated. GitHub Copilot is **not tested** because no local host/CLI was available. v0.1 has not met its three-agent release criterion; the published tag is therefore a prerelease.

@@ -18,7 +18,7 @@
 
 ## Metrics
 
-- Task success: 1/3 (33%)
+- Task success rate: 1/2 attempted (50%); 1 skipped
 - Average tool calls per task: 2.3
 - Average tool tokens per task: approximately 1,120 (estimate)
 - Tool-definition tokens: approximately 5,600 (estimate)
