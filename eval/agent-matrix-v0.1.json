@@ -1,0 +1,27 @@
+{
+  "skill_version": "0.1.0",
+  "status": "not_release_validated",
+  "agents": [
+    {
+      "name": "Codex",
+      "status": "not_run",
+      "reason": "No separate Codex run had the reference MCP servers connected.",
+      "full_20_tool_review_seconds": null
+    },
+    {
+      "name": "Claude Code",
+      "status": "blocked_auth",
+      "reason": "Claude Code CLI is installed, but claude auth status reported loggedIn=false.",
+      "full_20_tool_review_seconds": null
+    },
+    {
+      "name": "GitHub Copilot",
+      "status": "blocked_host_unavailable",
+      "reason": "The GitHub Copilot CLI/host was not available in this environment.",
+      "full_20_tool_review_seconds": null
+    }
+  ],
+  "repeatability": "not_run",
+  "seeded_naive_findings": "not_run",
+  "good_server_high_false_positives": "not_run"
+}

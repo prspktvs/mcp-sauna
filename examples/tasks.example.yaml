@@ -1,0 +1,12 @@
+environment: test
+tasks:
+  - id: TASK-01
+    request: Find Kelo Hotels Oy's most recent order and its status.
+  - id: TASK-02
+    request: Which sauna benches are low in stock?
+  - id: TASK-03
+    request: Show the first five unpaid invoices, including readable customer names.
+  - id: TASK-04
+    request: Prepare an order for two Harju 80 sauna heaters for Kelo Hotels Oy, but do not place it.
+  - id: TASK-05
+    request: Find the most recent invoice for Harju Building Supply Oy and say whether it is paid.

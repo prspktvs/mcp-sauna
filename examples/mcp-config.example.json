@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "naive-demo-identity-a": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/mcp-sauna/reference-servers/server.mjs"],
+      "env": {"SAUNA_VARIANT": "naive", "SAUNA_IDENTITY": "A"}
+    },
+    "naive-demo-identity-b": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/mcp-sauna/reference-servers/server.mjs"],
+      "env": {"SAUNA_VARIANT": "naive", "SAUNA_IDENTITY": "B"}
+    },
+    "good-demo": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/mcp-sauna/reference-servers/server.mjs"],
+      "env": {"SAUNA_VARIANT": "good", "SAUNA_IDENTITY": "A"}
+    }
+  }
+}

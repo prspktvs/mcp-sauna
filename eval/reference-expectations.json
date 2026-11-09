@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "naive": {
+    "required_findings": [
+      ["T1", "all tools"],
+      ["T2", "list_orders"],
+      ["T3", "list_orders"],
+      ["T4", "get_order_by_id"],
+      ["T5", "get_invoice_by_id"],
+      ["C1", "all tools"],
+      ["R1", "list_orders"],
+      ["R2", "list_orders"],
+      ["R3", "get_invoice_by_id"],
+      ["E1", "list_orders"],
+      ["E2", "get_order_by_id"],
+      ["S1", "create_order"],
+      ["S2", "get_or_update_stock"],
+      ["S3", "create_order"],
+      ["S4", "create_invoice"],
+      ["S5", "list_invoices"],
+      ["S6", "get_customer"]
+    ],
+    "required_severity_at_least": {
+      "S5": "Critical",
+      "T2": "High",
+      "T4": "High",
+      "R1": "High",
+      "E1": "High",
+      "E2": "High",
+      "S2": "High",
+      "S3": "High",
+      "S6": "High"
+    },
+    "requires_identity_a_and_b": true
+  },
+  "good": {
+    "forbidden_severities": ["High", "Critical"]
+  }
+}
