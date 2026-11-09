@@ -1,5 +1,7 @@
 # Cross-agent evaluation record
 
+> Historical v0.1 evaluation only. These runs predate the stable v1.0.0 release and do not establish v1.0.0 host compatibility. The stable release does not claim complete cross-host parity.
+
 The v0.1 portability criterion requires running the same skill files unchanged in Claude Code, Codex, and GitHub Copilot. Do not infer compatibility from a passing run in only one host.
 
 ## Result summary
@@ -28,4 +30,4 @@ The initial release report must label any unrun host as **not tested**. Never cl
 
 ## Interpretation
 
-Repeatability passed within Codex and Claude. Exact cross-host parity is not established because the saved Claude runs include the T5 checklist clarification that the Codex artifacts predate. GitHub Copilot is **not tested**, so v0.1 has not met its three-agent release criterion and remains a prerelease.
+Repeatability passed within Codex and Claude. Exact cross-host parity is not established because the saved Claude runs include the T5 checklist clarification that the Codex artifacts predate. GitHub Copilot is **not tested**, so v0.1 did not meet its three-agent criterion and that historical version remained a prerelease. This is not a fresh evaluation of v1.0.0.

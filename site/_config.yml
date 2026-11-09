@@ -1,0 +1,10 @@
+title: mcp-sauna
+description: Rehearse your MCP server's agent-facing design before real users depend on it.
+url: https://prspktvs.github.io
+baseurl: /mcp-sauna
+markdown: kramdown
+permalink: pretty
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

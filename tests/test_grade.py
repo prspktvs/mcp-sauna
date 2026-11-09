@@ -20,7 +20,7 @@ def run_data():
         "schema_version": 1,
         "run": {
             "environment": "test", "agent": "Codex", "model": "test-model",
-            "date": "2026-11-09", "skill_version": "0.1.0", "target_label": "fake server",
+            "date": "2026-11-09", "skill_version": "1.0.0", "rules_version": "v1", "target_label": "fake server",
         },
         "tool_definitions": [{
             "name": "search_orders", "description": "Search orders by readable fields.",
@@ -42,6 +42,7 @@ class GradeTests(unittest.TestCase):
     def test_complete_clean_run_gets_a(self):
         result = grade.build_results(run_data())
         self.assertEqual(result["summary"]["overall_grade"], "A")
+        self.assertEqual(result["rules_version"], "v1")
         self.assertEqual(result["scorecard"]["Responses"]["status"], "complete")
         self.assertEqual(result["metrics"]["estimated_tool_definition_tokens"], (result["metrics"]["tool_definition_bytes"] + 3) // 4)
 
@@ -51,6 +52,11 @@ class GradeTests(unittest.TestCase):
         result = grade.build_results(data)
         self.assertEqual(result["summary"]["overall_grade"], "incomplete")
         self.assertEqual(result["scorecard"]["Safety"]["status"], "incomplete")
+
+    def test_legacy_run_without_rules_version_is_labeled_unspecified(self):
+        data = run_data()
+        del data["run"]["rules_version"]
+        self.assertEqual(grade.build_results(data)["rules_version"], "unspecified")
 
     def test_skipped_tasks_are_excluded_from_success_rate_and_averages(self):
         data = run_data()

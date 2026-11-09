@@ -8,7 +8,7 @@ import { createReferenceServer } from "../reference-servers/server-core.mjs";
 
 async function connected(variant, identity = "A", allowWrites = false) {
   const server = createReferenceServer({ variant, identity, allowWrites });
-  const client = new Client({ name: "mcp-sauna-fixture-test", version: "0.1.0" });
+  const client = new Client({ name: "mcp-sauna-fixture-test", version: "1.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
   return { server, client };
@@ -92,7 +92,7 @@ test("published stdio entrypoint starts as an MCP server", async () => {
     args: [serverPath],
     env: { ...process.env, SAUNA_VARIANT: "good", SAUNA_IDENTITY: "A" },
   });
-  const client = new Client({ name: "mcp-sauna-stdio-test", version: "0.1.0" });
+  const client = new Client({ name: "mcp-sauna-stdio-test", version: "1.0.0" });
   try {
     await client.connect(transport);
     const listed = await client.listTools();

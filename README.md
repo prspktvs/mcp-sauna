@@ -64,7 +64,7 @@ The agent saves three files in its workspace:
 
 The scorecard covers five areas: **Tool design, Context cost, Responses, Errors, and Safety.** Findings have stable rule IDs and severity levels, so you can see what matters most and compare future runs. If a check cannot safely run, the overall result stays **incomplete** until the relevant coverage is available.
 
-See the [sample report](examples/report.example.md) for the full format.
+See the [sample report](examples/report.example.md) for the full format. The stable checks are published as the versioned [mcp-sauna rules v1 standard](standards/mcp-sauna-rules-v1.md).
 
 ## Try it
 
@@ -77,7 +77,7 @@ See the [sample report](examples/report.example.md) for the full format.
 
 If you provide a task file, mcp-sauna uses those tasks. Otherwise, it drafts realistic tasks from the tool list and asks you to confirm them before behavioral probes. It then saves the report files in the agent’s workspace.
 
-For a manual install, copy `SKILL.md`, `references/`, `scripts/`, and `examples/` into the host’s `mcp-sauna` skills folder. Keep them together so the skill can load its rules, report format, and grader. The agent runs the bundled grader automatically when Python 3.10+ is available; otherwise it applies the same grading formula itself. There is no hosted mcp-sauna service.
+For a manual install, copy `SKILL.md`, `references/`, `standards/`, `scripts/`, and `examples/` into the host’s `mcp-sauna` skills folder. Keep them together so the skill can load its rules, report format, and grader. The agent runs the bundled grader automatically when Python 3.10+ is available; otherwise it applies the same grading formula itself. There is no hosted mcp-sauna service.
 
 ## Safety and limits
 
@@ -89,7 +89,7 @@ For a manual install, copy `SKILL.md`, `references/`, `scripts/`, and `examples/
 
 ## Release status
 
-This is a prerelease. Codex and Claude Code each passed the naive reference checks twice with stable High/Critical findings and had no High or Critical findings on the good reference. The final-skill Claude runs also reported all seeded findings. GitHub Copilot has not been validated, and Codex’s saved run predates a small T5 checklist clarification, so exact cross-host parity remains unverified. See the [evaluation matrix](eval/agent-matrix-v0.1.json) and [sanitized reports](eval/artifacts/).
+**mcp-sauna v1.0.0 is a stable release.** The rules standard is versioned independently as [mcp-sauna rules v1](standards/mcp-sauna-rules-v1.md). Recorded host validation is from v0.1: Codex and Claude Code passed the reference checks, while GitHub Copilot was not tested. v1.0.0 has not had a fresh cross-host evaluation, so exact host parity is unverified. See the [historical evaluation matrix](eval/agent-matrix-v0.1.json), [sanitized reports](eval/artifacts/), and the [project site](https://prspktvs.github.io/mcp-sauna/).
 
 For project development, reference-server evaluation, and release validation, see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer scripts and multi-agent checks are documented there.
 

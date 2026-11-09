@@ -93,9 +93,11 @@ def validate_run(data: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, A
 
     run = data["run"]
     require(isinstance(run, dict), "run must be an object")
-    require(set(run) == {"environment", "agent", "model", "date", "skill_version", "target_label"}, "run must contain exactly the documented fields")
+    run_fields = {"environment", "agent", "model", "date", "skill_version", "target_label"}
+    require(frozenset(run) in {frozenset(run_fields), frozenset(run_fields | {"rules_version"})}, "run must contain the documented fields and may include rules_version")
     for key, value in run.items():
         string(value, f"run.{key}")
+    run.setdefault("rules_version", "unspecified")
     try:
         parsed_date = date.fromisoformat(run["date"])
         require(parsed_date.isoformat() == run["date"], "run.date must use YYYY-MM-DD format")
@@ -280,6 +282,7 @@ def build_results(data: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "skill_version": run["skill_version"],
+        "rules_version": run["rules_version"],
         "summary": {
             "overall_grade": overall,
             "verdict": verdict(overall, ordered_findings),
@@ -398,6 +401,7 @@ def markdown_report(results: dict[str, Any]) -> str:
         f"- Date: {run['date']}",
         f"- Calls: {metrics['total_tool_calls']}",
         f"- Skill version: {run['skill_version']}",
+        f"- Rules version: {run['rules_version']}",
         "",
         "Tool output passed through the model provider already used by the agent.",
         "",

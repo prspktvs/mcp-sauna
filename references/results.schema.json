@@ -4,10 +4,11 @@
   "title": "mcp-sauna results v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "skill_version", "summary", "scorecard", "metrics", "findings", "not_tested", "run_details", "disclosures"],
+  "required": ["schema_version", "skill_version", "rules_version", "summary", "scorecard", "metrics", "findings", "not_tested", "run_details", "disclosures"],
   "properties": {
     "schema_version": {"const": 1},
     "skill_version": {"type": "string"},
+    "rules_version": {"type": "string"},
     "summary": {
       "type": "object", "additionalProperties": false,
       "required": ["overall_grade", "verdict", "top_fixes"],
@@ -50,12 +51,12 @@
     "not_tested": {"type": "array", "items": {"$ref": "#/$defs/skippedProbe"}},
     "run_details": {
       "type": "object", "additionalProperties": false,
-      "required": ["environment", "agent", "model", "date", "skill_version", "target_label"],
+      "required": ["environment", "agent", "model", "date", "skill_version", "rules_version", "target_label"],
       "properties": {
         "environment": {"enum": ["dev", "test", "staging"]},
         "agent": {"type": "string"}, "model": {"type": "string"},
         "date": {"type": "string", "format": "date"},
-        "skill_version": {"type": "string"}, "target_label": {"type": "string"}
+        "skill_version": {"type": "string"}, "rules_version": {"type": "string"}, "target_label": {"type": "string"}
       }
     },
     "disclosures": {"type": "array", "items": {"type": "string"}}

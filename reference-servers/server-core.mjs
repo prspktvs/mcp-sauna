@@ -176,7 +176,7 @@ function createGood(server, identity, allowWrites) {
 
 export function createReferenceServer({ variant = "good", identity = "A", allowWrites = false } = {}) {
   if (!["naive", "good"].includes(variant)) throw new Error("SAUNA_VARIANT must be naive or good");
-  const server = new McpServer({ name: `mcp-sauna-${variant}-reference`, version: "0.1.0" });
+  const server = new McpServer({ name: `mcp-sauna-${variant}-reference`, version: "1.0.0" });
   if (variant === "naive") createNaive(server);
   else createGood(server, identity, allowWrites);
   return server;

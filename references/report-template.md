@@ -14,7 +14,8 @@ Use this shape (all top-level fields required unless noted):
     "agent": "Codex",
     "model": "model name or unknown",
     "date": "2026-11-09",
-    "skill_version": "0.1.0",
+    "skill_version": "1.0.0",
+    "rules_version": "v1",
     "target_label": "local test server"
   },
   "tool_definitions": [
@@ -66,9 +67,13 @@ Use this shape (all top-level fields required unless noted):
 
 Allowed call `outcome` values: `success`, `error`, `skipped`. `phase` is `static` or `P1`–`P6`. Tool definitions are needed only for C1/static evidence; they are not copied to the final report. Each call entry stores field names and sizes/counts, never argument or result values. Use `error_class` such as `validation`, `not_found`, `permission`, or `transport`; do not store raw error text.
 
+For mcp-sauna v1.0.0, include `rules_version: "v1"` in the `run` object. Older inputs may omit this field; when regraded, their output identifies the rules version as `unspecified` rather than guessing.
+
 `identity` is `A` or `B` only for a P4 call through the corresponding configured test connection; otherwise it is null. Task `status` is `success`, `failed`, or `skipped`. A skipped task has zero attempts and is excluded from the success-rate denominator and per-task averages; attempted tasks have one or two attempts. `estimated_tokens` uses provider usage if exposed. Otherwise estimate from UTF-8 bytes divided by four, round up, and label aggregate metrics as estimates. Avoid false precision.
 
 ## Report layout
+
+The generated Markdown report identifies both the skill version and rules version. For this release, use `skill_version: "1.0.0"` and `rules_version: "v1"`.
 
 The generated Markdown report contains:
 

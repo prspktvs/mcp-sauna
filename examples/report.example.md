@@ -46,6 +46,7 @@
 - Agent/model: example only
 - Date: 2026-11-09
 - Calls: 14
-- Skill version: 0.1.0
+- Skill version: 1.0.0
+- Rules version: v1
 
 Tool output passed through the model provider already used by the agent. This is an automated design review, not a security audit.
