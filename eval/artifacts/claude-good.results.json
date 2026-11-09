@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "skill_version": "0.1.0",
+  "summary": {
+    "overall_grade": "incomplete",
+    "verdict": "The review is incomplete; skipped probes are not counted as passes.",
+    "top_fixes": [
+      {
+        "rule_id": "S1",
+        "tool": "place_order",
+        "fix": "Publish accurate annotations (place_order: readOnlyHint false, destructiveHint per behavior, idempotentHint true with its key) and confirm the host forwards them."
+      }
+    ]
+  },
+  "scorecard": {
+    "Tool design": {
+      "grade": "A",
+      "status": "complete",
+      "finding_count": 0,
+      "incomplete_reasons": []
+    },
+    "Context cost": {
+      "grade": "A",
+      "status": "complete",
+      "finding_count": 0,
+      "incomplete_reasons": []
+    },
+    "Responses": {
+      "grade": "A",
+      "status": "complete",
+      "finding_count": 0,
+      "incomplete_reasons": []
+    },
+    "Errors": {
+      "grade": "A",
+      "status": "incomplete",
+      "finding_count": 0,
+      "incomplete_reasons": [
+        "P2 skipped: Empty required-ID input not tested: host schema enforces minLength on required inputs and validation was not bypassed. Only the malformed-date case ran."
+      ]
+    },
+    "Safety": {
+      "grade": "C",
+      "status": "incomplete",
+      "finding_count": 1,
+      "incomplete_reasons": [
+        "P5 skipped: Write probes disabled by the user."
+      ]
+    }
+  },
+  "metrics": {
+    "task_count": 8,
+    "attempted_tasks": 6,
+    "skipped_tasks": 2,
+    "successful_tasks": 2,
+    "task_success_rate": 0.3333333333333333,
+    "average_tool_calls_per_task": 1.6666666666666667,
+    "average_estimated_tokens_per_task": 74.0,
+    "tool_definition_bytes": 5254,
+    "estimated_tool_definition_tokens": 1314,
+    "unsafe_behaviors_found": 1,
+    "total_tool_calls": 14,
+    "token_estimate_method": "Provider usage when available; otherwise ceil(UTF-8 bytes / 4). Estimates exclude assistant reasoning unless the host supplied usage."
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "place_order",
+      "evidence_call_ids": [],
+      "summary": "No mutation annotations (readOnlyHint/destructiveHint/idempotentHint) are visible to the agent for the state-changing place_order tool; whether the gap is in the server or the host is unknown.",
+      "why_it_matters": "Without agent-visible annotations, clients cannot reliably distinguish the write tool from read tools or apply approval policy.",
+      "fix": "Publish accurate annotations (place_order: readOnlyHint false, destructiveHint per behavior, idempotentHint true with its key) and confirm the host forwards them."
+    }
+  ],
+  "not_tested": [
+    {
+      "probe_id": "P2",
+      "reason": "Empty required-ID input not tested: host schema enforces minLength on required inputs and validation was not bypassed. Only the malformed-date case ran."
+    },
+    {
+      "probe_id": "P5",
+      "reason": "Write probes disabled by the user."
+    }
+  ],
+  "run_details": {
+    "environment": "test",
+    "agent": "Claude Code",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-09",
+    "skill_version": "0.1.0",
+    "target_label": "good_a / good_b local synthetic test servers"
+  },
+  "disclosures": [
+    "Tool output passed through the model provider already used by the agent.",
+    "This is an automated design review, not a security audit.",
+    "Booking link not configured; publisher must set MCP_SAUNA_BOOKING_URL before public release."
+  ]
+}

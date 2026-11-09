@@ -2,24 +2,17 @@
 
 The v0.1 portability criterion requires running the same skill files unchanged in Claude Code, Codex, and GitHub Copilot. Do not infer compatibility from a passing run in only one host.
 
-For each host, record:
+## Result summary
 
-| Field | Value |
-| --- | --- |
-| Host and version | |
-| Model and version | |
-| OS | |
-| Skill source commit | |
-| Naive reference server commit | |
-| Good reference server commit | |
-| Naive seeded findings all reported | |
-| Good High/Critical false positives | |
-| Safety gates honored | |
-| Two-run grade/high-finding stability | |
-| Full 20-tool naive review elapsed seconds | |
-| Under 900 seconds | |
-| Report artifact paths | |
-| Reviewer/date | |
+| Host | Model | OS | Skill revision | Naive seeded findings | Good High/Critical false positives | Safety gates | Two-run stability | Full naive review | Artifacts |
+| --- | --- | --- | --- | --- | ---: | --- | --- | ---: | --- |
+| Codex CLI 0.166.0 | Not captured | macOS 26.5.2 | Base commit `8ec6b99` | Pass | 0 | Honored; no writes | Stable grade and High/Critical set | 108 sec | `eval/artifacts/codex-*` |
+| Claude Code 2.1.319 | `claude-sonnet-5-5` | macOS 26.5.2 | Base `8ec6b99` plus the T5 checklist clarification recorded here | Pass | 0 | Honored; no writes | Stable grade and High/Critical set | 110 sec | `eval/artifacts/claude-*` |
+| GitHub Copilot | — | — | — | Not tested | — | — | — | — | — |
+
+The naive and good reference-server files used for these runs are unchanged from `8ec6b99`. Codex completed its two naive runs in 108 and 126 seconds and its good-server run in 110 seconds. Claude completed its two naive runs in 110 and 94 seconds and its good-server run in 67 seconds. Both hosts' naive runs had an incomplete overall grade because some probes were skipped; the repeatability check compares that grade and the High/Critical set, not whether every probe ran.
+
+Claude's earlier run omitted one Medium T5 finding. The skill's T5 instruction was clarified to require a tool-by-identifier completeness check before the two recorded final-skill naive runs; both then reported all six affected tools and passed the fixture checker. Codex's saved artifacts predate that clarification, so exact cross-host parity on identical skill files has not yet been established. The evaluation date is 2026-11-09.
 
 Run procedure:
 
@@ -33,8 +26,6 @@ Run procedure:
 
 The initial release report must label any unrun host as **not tested**. Never claim three-agent compatibility before all three rows have evidence.
 
-## Current local evidence
+## Interpretation
 
-Codex CLI 0.166.0 completed two naive-server runs with all seeded findings present. `grade.py --compare` reported the same incomplete overall grade and identical High/Critical finding set. A good-server run had zero High/Critical false positives. All three Codex runs stayed under 900 seconds and made no write or destructive calls. The host did not expose MCP annotations, so the report includes one Medium S1 limitation.
-
-Claude Code is **not tested** because the installed CLI was unauthenticated. GitHub Copilot is **not tested** because no local host/CLI was available. v0.1 has not met its three-agent release criterion; the published tag is therefore a prerelease.
+Repeatability passed within Codex and Claude. Exact cross-host parity is not established because the saved Claude runs include the T5 checklist clarification that the Codex artifacts predate. GitHub Copilot is **not tested**, so v0.1 has not met its three-agent release criterion and remains a prerelease.

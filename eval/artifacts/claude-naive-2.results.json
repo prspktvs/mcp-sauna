@@ -1,0 +1,939 @@
+{
+  "schema_version": 1,
+  "skill_version": "0.1.0",
+  "summary": {
+    "overall_grade": "incomplete",
+    "verdict": "The review is incomplete; skipped probes are not counted as passes.",
+    "top_fixes": [
+      {
+        "rule_id": "S5",
+        "tool": "mcp__naive_a__get_invoice_by_id",
+        "fix": "Enforce per-identity authorization server-side on every read and return not-found or permission errors for unauthorized records; add a regression test with two identities."
+      },
+      {
+        "rule_id": "E1",
+        "tool": "mcp__naive_a__list_orders",
+        "fix": "Validate fromDate and return a structured invalid_date error stating the expected format, with a 4xx class."
+      },
+      {
+        "rule_id": "E2",
+        "tool": "mcp__naive_a__get_invoice_by_id",
+        "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+      }
+    ]
+  },
+  "scorecard": {
+    "Tool design": {
+      "grade": "D",
+      "status": "complete",
+      "finding_count": 46,
+      "incomplete_reasons": []
+    },
+    "Context cost": {
+      "grade": "C",
+      "status": "complete",
+      "finding_count": 1,
+      "incomplete_reasons": []
+    },
+    "Responses": {
+      "grade": "D",
+      "status": "incomplete",
+      "finding_count": 7,
+      "incomplete_reasons": [
+        "P3 skipped: No documented safe maximum on any list tool; behavioral part skipped and R1 reported statically."
+      ]
+    },
+    "Errors": {
+      "grade": "D",
+      "status": "complete",
+      "finding_count": 4,
+      "incomplete_reasons": []
+    },
+    "Safety": {
+      "grade": "F",
+      "status": "incomplete",
+      "finding_count": 24,
+      "incomplete_reasons": [
+        "P5 skipped: Write probes disabled; no write or destructive tool was called."
+      ]
+    }
+  },
+  "metrics": {
+    "task_count": 8,
+    "attempted_tasks": 4,
+    "skipped_tasks": 4,
+    "successful_tasks": 3,
+    "task_success_rate": 0.75,
+    "average_tool_calls_per_task": 1.25,
+    "average_estimated_tokens_per_task": 95.5,
+    "tool_definition_bytes": 63884,
+    "estimated_tool_definition_tokens": 15971,
+    "unsafe_behaviors_found": 24,
+    "total_tool_calls": 12,
+    "token_estimate_method": "Provider usage when available; otherwise ceil(UTF-8 bytes / 4). Estimates exclude assistant reasoning unless the host supplied usage."
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "rule_id": "S5",
+      "severity": "Critical",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [
+        "CALL-01",
+        "CALL-02"
+      ],
+      "summary": "Identity B received the restricted synthetic invoice that only identity A is expected to see, through the same get_invoice_by_id read (same response fields, 1 record).",
+      "why_it_matters": "Authorization appears shared across the two configured identities, so per-user data isolation is not enforced.",
+      "fix": "Enforce per-identity authorization server-side on every read and return not-found or permission errors for unauthorized records; add a regression test with two identities."
+    },
+    {
+      "id": "F-03",
+      "rule_id": "E1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [
+        "CALL-03"
+      ],
+      "summary": "Malformed fromDate returned a raw status 500 with a stack-trace field and no safe next step.",
+      "why_it_matters": "Callers get no actionable guidance, and internals leak.",
+      "fix": "Validate fromDate and return a structured invalid_date error stating the expected format, with a 4xx class."
+    },
+    {
+      "id": "F-04",
+      "rule_id": "E2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [
+        "CALL-04"
+      ],
+      "summary": "An empty value for the required identifier succeeded with a null/empty result instead of an error.",
+      "why_it_matters": "A missing identifier is indistinguishable from no match.",
+      "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+    },
+    {
+      "id": "F-05",
+      "rule_id": "E2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [
+        "CALL-05"
+      ],
+      "summary": "An empty value for the required identifier succeeded with a null/empty result instead of an error.",
+      "why_it_matters": "A missing identifier is indistinguishable from no match.",
+      "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+    },
+    {
+      "id": "F-06",
+      "rule_id": "E2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_product_by_sku",
+      "evidence_call_ids": [
+        "CALL-06"
+      ],
+      "summary": "An empty value for the required identifier succeeded with a null/empty result instead of an error.",
+      "why_it_matters": "A missing identifier is indistinguishable from no match.",
+      "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+    },
+    {
+      "id": "F-09",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_customers",
+      "evidence_call_ids": [],
+      "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+      "why_it_matters": "Result completeness and size are unknowable.",
+      "fix": "Add a capped limit, cursor, and total/has_more."
+    },
+    {
+      "id": "F-07",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [],
+      "summary": "No limit, cursor or total/has-more field in the schema; only an optional customerName filter. Behavioral P3 skipped.",
+      "why_it_matters": "Result completeness and size are unknowable.",
+      "fix": "Add a capped limit, cursor, and total/has_more."
+    },
+    {
+      "id": "F-08",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [],
+      "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+      "why_it_matters": "Result completeness and size are unknowable.",
+      "fix": "Add a capped limit, cursor, and total/has_more."
+    },
+    {
+      "id": "F-10",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_products",
+      "evidence_call_ids": [],
+      "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+      "why_it_matters": "Result completeness and size are unknowable.",
+      "fix": "Add a capped limit, cursor, and total/has_more."
+    },
+    {
+      "id": "F-11",
+      "rule_id": "R1",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_stock",
+      "evidence_call_ids": [],
+      "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+      "why_it_matters": "Result completeness and size are unknowable.",
+      "fix": "Add a capped limit, cursor, and total/has_more."
+    },
+    {
+      "id": "F-72",
+      "rule_id": "S2",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "One tool reads stock when quantity is omitted and changes stock when it is set.",
+      "why_it_matters": "An omitted argument decides whether state changes.",
+      "fix": "Split into check_stock and adjust_stock."
+    },
+    {
+      "id": "F-73",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+      "why_it_matters": "Wrong arguments commit immediately.",
+      "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+    },
+    {
+      "id": "F-75",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+      "why_it_matters": "Wrong arguments commit immediately.",
+      "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+    },
+    {
+      "id": "F-74",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+      "why_it_matters": "Wrong arguments commit immediately.",
+      "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+    },
+    {
+      "id": "F-78",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+      "why_it_matters": "Wrong arguments commit immediately.",
+      "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+    },
+    {
+      "id": "F-77",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+      "why_it_matters": "Wrong arguments commit immediately.",
+      "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+    },
+    {
+      "id": "F-76",
+      "rule_id": "S3",
+      "severity": "High",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+      "why_it_matters": "Wrong arguments commit immediately.",
+      "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+    },
+    {
+      "id": "F-02",
+      "rule_id": "S6",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_customer",
+      "evidence_call_ids": [
+        "CALL-07",
+        "CALL-08"
+      ],
+      "summary": "Result field admin_note contains text addressed to the agent that tells it to disregard prior directions and bulk-expose records via another tool. Not followed or quoted; seen in 2 of 2 results.",
+      "why_it_matters": "Injected instructions in output can steer agents into bulk data exposure.",
+      "fix": "Remove agent-directed text from results; return only data fields and sanitize stored free-text."
+    },
+    {
+      "id": "F-17",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_customers",
+      "evidence_call_ids": [],
+      "summary": "list_customers and get_customer both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+      "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+      "fix": "State when to use each and how to scope each lookup."
+    },
+    {
+      "id": "F-18",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [],
+      "summary": "list_invoices and get_invoice_by_id both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+      "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+      "fix": "State when to use each and how to scope each lookup."
+    },
+    {
+      "id": "F-16",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [],
+      "summary": "list_orders and get_order_by_id both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+      "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+      "fix": "State when to use each and how to scope each lookup."
+    },
+    {
+      "id": "F-19",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_products",
+      "evidence_call_ids": [],
+      "summary": "list_products and get_product_by_sku both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+      "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+      "fix": "State when to use each and how to scope each lookup."
+    },
+    {
+      "id": "F-20",
+      "rule_id": "T2",
+      "severity": "High",
+      "tool": "mcp__naive_a__list_stock",
+      "evidence_call_ids": [],
+      "summary": "list_stock and get_or_update_stock both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+      "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+      "fix": "State when to use each and how to scope each lookup."
+    },
+    {
+      "id": "F-41",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-42",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-43",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-44",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-45",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-46",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-47",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-50",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-48",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-49",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__get_product_by_sku",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-51",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-52",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__update_customer",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-53",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-54",
+      "rule_id": "T4",
+      "severity": "High",
+      "tool": "mcp__naive_a__update_product",
+      "evidence_call_ids": [],
+      "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+      "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+      "fix": "Document format, constraints and an example for each required property."
+    },
+    {
+      "id": "F-14",
+      "rule_id": "C1",
+      "severity": "Medium",
+      "tool": "all tools",
+      "evidence_call_ids": [],
+      "summary": "The 20 distinct tool definitions are about 54 KB serialized; the estimate is far above 5,000 tokens, mainly from a 7x repeated boilerplate description (see metrics for exact estimate).",
+      "why_it_matters": "Heavy fixed context cost on every request.",
+      "fix": "Cut descriptions to one short task-oriented paragraph and consolidate tools."
+    },
+    {
+      "id": "F-12",
+      "rule_id": "R2",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [
+        "CALL-09",
+        "CALL-10"
+      ],
+      "summary": "Both order lookups returned about 7 internal fields (route, bin, audit, source system, retry counter, export marker, billing segment) unrelated to a status check.",
+      "why_it_matters": "Raises context cost and exposes internals.",
+      "fix": "Return a task-shaped summary (order number, status, customer name, dates, total) and make internals opt-in."
+    },
+    {
+      "id": "F-61",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-62",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-63",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-64",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-65",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-66",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-67",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-68",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-69",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_customer",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-70",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-71",
+      "rule_id": "S1",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_product",
+      "evidence_call_ids": [],
+      "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+      "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+      "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+    },
+    {
+      "id": "F-79",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Create operation has no idempotency key in its schema.",
+      "why_it_matters": "A retry can create duplicates.",
+      "fix": "Require a client idempotency key and document retry behavior."
+    },
+    {
+      "id": "F-80",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Create operation has no idempotency key in its schema.",
+      "why_it_matters": "A retry can create duplicates.",
+      "fix": "Require a client idempotency key and document retry behavior."
+    },
+    {
+      "id": "F-81",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Create operation has no idempotency key in its schema.",
+      "why_it_matters": "A retry can create duplicates.",
+      "fix": "Require a client idempotency key and document retry behavior."
+    },
+    {
+      "id": "F-82",
+      "rule_id": "S4",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Create operation has no idempotency key in its schema.",
+      "why_it_matters": "A retry can create duplicates.",
+      "fix": "Require a client idempotency key and document retry behavior."
+    },
+    {
+      "id": "F-15",
+      "rule_id": "T1",
+      "severity": "Medium",
+      "tool": "all tools",
+      "evidence_call_ids": [],
+      "summary": "The catalog mirrors the legacy API one-to-one with get/list/create/update/delete/cancel per entity and no task-level tools.",
+      "why_it_matters": "Agents must orchestrate raw endpoints and internal IDs.",
+      "fix": "Offer task tools such as find_account, check_order_status, prepare_order."
+    },
+    {
+      "id": "F-21",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-22",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_customer",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-23",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-24",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_order",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-25",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_product",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-26",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__delete_customer",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-27",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_customer",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-28",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-29",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_or_update_stock",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-30",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-31",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_product_by_sku",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-32",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_customers",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-33",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-34",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_orders",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-35",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_products",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-36",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__list_stock",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-37",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-38",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_customer",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-39",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-40",
+      "rule_id": "T3",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_product",
+      "evidence_call_ids": [],
+      "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+      "why_it_matters": "Agents cannot choose among tools reliably.",
+      "fix": "Write when to use and when not to use, naming the alternative tool."
+    },
+    {
+      "id": "F-59",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__cancel_order",
+      "evidence_call_ids": [],
+      "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+      "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+      "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+    },
+    {
+      "id": "F-57",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__create_invoice",
+      "evidence_call_ids": [],
+      "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+      "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+      "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+    },
+    {
+      "id": "F-55",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_invoice_by_id",
+      "evidence_call_ids": [],
+      "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+      "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+      "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+    },
+    {
+      "id": "F-58",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__get_order_by_id",
+      "evidence_call_ids": [],
+      "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+      "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+      "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+    },
+    {
+      "id": "F-56",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__send_invoice",
+      "evidence_call_ids": [],
+      "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+      "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+      "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+    },
+    {
+      "id": "F-60",
+      "rule_id": "T5",
+      "severity": "Medium",
+      "tool": "mcp__naive_a__update_order",
+      "evidence_call_ids": [],
+      "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+      "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+      "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+    },
+    {
+      "id": "F-13",
+      "rule_id": "R3",
+      "severity": "Low",
+      "tool": "mcp__naive_a__list_invoices",
+      "evidence_call_ids": [
+        "CALL-11"
+      ],
+      "summary": "Invoice rows contain id, status, amount, currency but no invoice number, customer name or date.",
+      "why_it_matters": "Rows cannot be interpreted or ordered by recency; TASK-05 failed on both attempts for this reason.",
+      "fix": "Add invoice number, customer name and issue/due date to each row."
+    }
+  ],
+  "not_tested": [
+    {
+      "probe_id": "P3",
+      "reason": "No documented safe maximum on any list tool; behavioral part skipped and R1 reported statically."
+    },
+    {
+      "probe_id": "P5",
+      "reason": "Write probes disabled; no write or destructive tool was called."
+    }
+  ],
+  "run_details": {
+    "environment": "test",
+    "agent": "Claude Code",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-09",
+    "skill_version": "0.1.0",
+    "target_label": "local synthetic wholesale test server (naive_a, naive_b)"
+  },
+  "disclosures": [
+    "Tool output passed through the model provider already used by the agent.",
+    "This is an automated design review, not a security audit.",
+    "Booking link not configured; publisher must set MCP_SAUNA_BOOKING_URL before public release."
+  ]
+}

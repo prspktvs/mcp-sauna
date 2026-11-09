@@ -1,6 +1,6 @@
 {
   "skill_version": "0.1.0",
-  "status": "partial_codex_validation",
+  "status": "partial_codex_claude_validation",
   "agents": [
     {
       "name": "Codex",
@@ -8,18 +8,48 @@
       "status": "reference_checks_passed",
       "reason": "Two naive runs passed all seeded checks and matched grade/high-severity findings. One good-server run produced no High/Critical findings. MCP annotations were unavailable to the host, producing one Medium S1 limitation.",
       "naive_runs": [
-        {"artifacts": "eval/artifacts/codex-naive-1.*", "elapsed_seconds": 108, "seeded_findings_pass": true},
-        {"artifacts": "eval/artifacts/codex-naive-2.*", "elapsed_seconds": 126, "seeded_findings_pass": true}
+        {
+          "artifacts": "eval/artifacts/codex-naive-1.*",
+          "elapsed_seconds": 108,
+          "seeded_findings_pass": true
+        },
+        {
+          "artifacts": "eval/artifacts/codex-naive-2.*",
+          "elapsed_seconds": 126,
+          "seeded_findings_pass": true
+        }
       ],
-      "good_run": {"artifacts": "eval/artifacts/codex-good.*", "elapsed_seconds": 110, "high_or_critical_false_positives": 0},
+      "good_run": {
+        "artifacts": "eval/artifacts/codex-good.*",
+        "elapsed_seconds": 110,
+        "high_or_critical_false_positives": 0
+      },
       "full_20_tool_review_seconds": 108
     },
     {
       "name": "Claude Code",
       "host_version": "2.1.319",
-      "status": "blocked_auth",
-      "reason": "Claude Code CLI is installed, but claude auth status reported loggedIn=false.",
-      "full_20_tool_review_seconds": null
+      "model": "claude-sonnet-5-5",
+      "status": "reference_checks_passed",
+      "reason": "Two naive runs with the final skill passed all seeded checks and matched the incomplete grade and High/Critical findings. The good-server run had no High/Critical findings; one Medium S1 annotation-visibility limitation remained. Earlier runs exposed one inconsistent Medium T5 omission, so the checklist was clarified before these recorded runs.",
+      "naive_runs": [
+        {
+          "artifacts": "eval/artifacts/claude-naive-1.*",
+          "elapsed_seconds": 110,
+          "seeded_findings_pass": true
+        },
+        {
+          "artifacts": "eval/artifacts/claude-naive-2.*",
+          "elapsed_seconds": 94,
+          "seeded_findings_pass": true
+        }
+      ],
+      "good_run": {
+        "artifacts": "eval/artifacts/claude-good.*",
+        "elapsed_seconds": 67,
+        "high_or_critical_false_positives": 0
+      },
+      "full_20_tool_review_seconds": 110
     },
     {
       "name": "GitHub Copilot",
@@ -29,8 +59,10 @@
       "full_20_tool_review_seconds": null
     }
   ],
-  "repeatability": "pass_in_codex",
-  "seeded_naive_findings": "pass_in_codex",
-  "good_server_high_false_positives": "pass_in_codex",
-  "three_agent_release_criterion": "not_met"
+  "repeatability": "pass_in_codex_and_claude",
+  "seeded_naive_findings": "pass_in_codex_and_claude",
+  "good_server_high_false_positives": "pass_in_codex_and_claude",
+  "three_agent_release_criterion": "not_met",
+  "cross_host_same_skill_revision": "not_demonstrated_codex_artifacts_predate_t5_clarification",
+  "note": "Final Claude runs include the T5 completeness clarification. Existing Codex runs predate it; repeatability passed within both hosts, but exact cross-host parity on identical skill files is not established."
 }

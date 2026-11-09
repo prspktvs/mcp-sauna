@@ -1,0 +1,555 @@
+{
+ "schema_version": 1,
+ "run": {
+  "environment": "test",
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "date": "2026-11-09",
+  "skill_version": "0.1.0",
+  "target_label": "good_a / good_b local synthetic test servers"
+ },
+ "tool_definitions": [
+  {
+   "name": "check_stock",
+   "description": "Check stock: Use this to check available quantity and reorder point for a product by name or SKU. Do not use this tool for changing stock or placing an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "product": {
+      "description": "Product name or SKU, e.g. Harju 80 sauna heater",
+      "minLength": 2,
+      "type": "string"
+     }
+    },
+    "required": [
+     "product"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "find_account",
+   "description": "Find account: Use this to resolve a customer from its legal or trading name and view its account status. Do not use this tool for searching invoices or changing an account. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "description": "Customer legal or trading name, e.g. Kelo Hotels Oy",
+      "minLength": 2,
+      "type": "string"
+     }
+    },
+    "required": [
+     "name"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "place_order",
+   "description": "Place reviewed order: Use this only after the user has reviewed a preview and explicitly asked to place it. Do not use this tool for drafting, editing, or cancelling an order. Do not use this tool for {}. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "confirmation": {
+      "const": "CONFIRM",
+      "description": "Required confirmation value after the user approves this exact preview",
+      "type": "string"
+     },
+     "idempotencyKey": {
+      "description": "Client-generated key reused for an exact retry, at least 8 characters",
+      "minLength": 8,
+      "type": "string"
+     },
+     "previewId": {
+      "description": "Preview ID returned by preview_order, e.g. PREVIEW-...",
+      "minLength": 1,
+      "type": "string"
+     }
+    },
+    "required": [
+     "previewId",
+     "idempotencyKey",
+     "confirmation"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "preview_order",
+   "description": "Preview order: Use this to calculate a draft order and review its customer, items, and total before placement. Do not use this tool for placing or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "customer": {
+      "description": "Customer legal or trading name, e.g. Kelo Hotels Oy",
+      "minLength": 2,
+      "type": "string"
+     },
+     "quantity": {
+      "description": "Whole-unit quantity from 1 to 50",
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+     },
+     "sku": {
+      "description": "Product SKU, e.g. HARJU-80",
+      "minLength": 2,
+      "type": "string"
+     }
+    },
+    "required": [
+     "customer",
+     "sku",
+     "quantity"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "search_invoices",
+   "description": "Search invoices: Use this to find invoices by readable number, customer name, or payment status. Do not use this tool for creating, sending, or paying an invoice. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "cursor": {
+      "type": "string",
+      "description": "Continuation cursor returned by a previous page"
+     },
+     "limit": {
+      "default": 20,
+      "description": "Page size from 1 to 50",
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+     },
+     "query": {
+      "description": "Readable invoice number or customer name",
+      "type": "string"
+     },
+     "status": {
+      "description": "Payment state to filter by",
+      "enum": [
+       "paid",
+       "unpaid",
+       "overdue"
+      ],
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "search_orders",
+   "description": "Search orders: Use this to find order status by order number, customer name, or date range. Do not use this tool for creating, changing, or cancelling an order. Inputs include a readable customer or product name when relevant; output labels are designed for a user to recognize the matching record. Errors identify a field and safe next step. Results are bounded, and continuation metadata is included when more results exist.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "cursor": {
+      "type": "string",
+      "description": "Continuation cursor returned by a previous page"
+     },
+     "fromDate": {
+      "description": "Inclusive start date in YYYY-MM-DD format, e.g. 2026-10-01",
+      "type": "string"
+     },
+     "limit": {
+      "default": 20,
+      "description": "Page size from 1 to 50",
+      "maximum": 50,
+      "minimum": 1,
+      "type": "integer"
+     },
+     "query": {
+      "description": "Readable order number or customer name; omit to list recent orders",
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  }
+ ],
+ "tasks": [
+  {
+   "id": "TASK-01",
+   "status": "failed",
+   "attempts": 2,
+   "tool_calls": 2,
+   "estimated_tokens": 280
+  },
+  {
+   "id": "TASK-02",
+   "status": "success",
+   "attempts": 1,
+   "tool_calls": 1,
+   "estimated_tokens": 38
+  },
+  {
+   "id": "TASK-03",
+   "status": "success",
+   "attempts": 1,
+   "tool_calls": 1,
+   "estimated_tokens": 48
+  },
+  {
+   "id": "TASK-04",
+   "status": "skipped",
+   "attempts": 0,
+   "tool_calls": 0,
+   "estimated_tokens": 0
+  },
+  {
+   "id": "TASK-05",
+   "status": "failed",
+   "attempts": 2,
+   "tool_calls": 2,
+   "estimated_tokens": 26
+  },
+  {
+   "id": "TASK-06",
+   "status": "skipped",
+   "attempts": 0,
+   "tool_calls": 0,
+   "estimated_tokens": 0
+  },
+  {
+   "id": "TASK-07",
+   "status": "failed",
+   "attempts": 2,
+   "tool_calls": 2,
+   "estimated_tokens": 26
+  },
+  {
+   "id": "TASK-08",
+   "status": "failed",
+   "attempts": 2,
+   "tool_calls": 2,
+   "estimated_tokens": 26
+  }
+ ],
+ "calls": [
+  {
+   "id": "CALL-01",
+   "phase": "P1",
+   "task_id": "TASK-01",
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "orders",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 5,
+   "result_bytes": 560,
+   "estimated_tokens": 140,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-02",
+   "phase": "P1",
+   "task_id": "TASK-02",
+   "identity": null,
+   "tool": "check_stock",
+   "argument_fields": [
+    "product"
+   ],
+   "result_fields": [
+    "items",
+    "count"
+   ],
+   "result_items": 1,
+   "result_bytes": 150,
+   "estimated_tokens": 38,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-03",
+   "phase": "P1",
+   "task_id": "TASK-03",
+   "identity": null,
+   "tool": "search_invoices",
+   "argument_fields": [
+    "status",
+    "limit"
+   ],
+   "result_fields": [
+    "invoices",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 1,
+   "result_bytes": 190,
+   "estimated_tokens": 48,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-04",
+   "phase": "P1",
+   "task_id": "TASK-05",
+   "identity": null,
+   "tool": "search_invoices",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "invoices",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-05",
+   "phase": "P1",
+   "task_id": "TASK-07",
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "orders",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-06",
+   "phase": "P1",
+   "task_id": "TASK-08",
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "orders",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-07",
+   "phase": "P2",
+   "task_id": null,
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "fromDate",
+    "limit"
+   ],
+   "result_fields": [
+    "error"
+   ],
+   "result_items": 0,
+   "result_bytes": 120,
+   "estimated_tokens": 30,
+   "outcome": "error",
+   "error_class": "validation"
+  },
+  {
+   "id": "CALL-08",
+   "phase": "P3",
+   "task_id": null,
+   "identity": null,
+   "tool": "search_invoices",
+   "argument_fields": [
+    "status",
+    "limit"
+   ],
+   "result_fields": [
+    "invoices",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 1,
+   "result_bytes": 190,
+   "estimated_tokens": 48,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-09",
+   "phase": "P4",
+   "task_id": null,
+   "identity": "A",
+   "tool": "search_invoices",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "invoices",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 1,
+   "result_bytes": 190,
+   "estimated_tokens": 48,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-10",
+   "phase": "P4",
+   "task_id": null,
+   "identity": "B",
+   "tool": "search_invoices",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "invoices",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-11",
+   "phase": "P1",
+   "task_id": "TASK-01",
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "fromDate",
+    "limit"
+   ],
+   "result_fields": [
+    "orders",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 5,
+   "result_bytes": 560,
+   "estimated_tokens": 140,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-12",
+   "phase": "P1",
+   "task_id": "TASK-05",
+   "identity": null,
+   "tool": "search_invoices",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "invoices",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-13",
+   "phase": "P1",
+   "task_id": "TASK-07",
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "orders",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-14",
+   "phase": "P1",
+   "task_id": "TASK-08",
+   "identity": null,
+   "tool": "search_orders",
+   "argument_fields": [
+    "query",
+    "limit"
+   ],
+   "result_fields": [
+    "orders",
+    "count",
+    "nextCursor"
+   ],
+   "result_items": 0,
+   "result_bytes": 50,
+   "estimated_tokens": 13,
+   "outcome": "success",
+   "error_class": null
+  }
+ ],
+ "findings": [
+  {
+   "id": "F-01",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "place_order",
+   "evidence_call_ids": [],
+   "summary": "No mutation annotations (readOnlyHint/destructiveHint/idempotentHint) are visible to the agent for the state-changing place_order tool; whether the gap is in the server or the host is unknown.",
+   "why_it_matters": "Without agent-visible annotations, clients cannot reliably distinguish the write tool from read tools or apply approval policy.",
+   "fix": "Publish accurate annotations (place_order: readOnlyHint false, destructiveHint per behavior, idempotentHint true with its key) and confirm the host forwards them."
+  }
+ ],
+ "skipped_probes": [
+  {
+   "probe_id": "P2",
+   "reason": "Empty required-ID input not tested: host schema enforces minLength on required inputs and validation was not bypassed. Only the malformed-date case ran."
+  },
+  {
+   "probe_id": "P5",
+   "reason": "Write probes disabled by the user."
+  }
+ ]
+}

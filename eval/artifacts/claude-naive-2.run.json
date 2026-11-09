@@ -1,0 +1,1545 @@
+{
+ "schema_version": 1,
+ "run": {
+  "environment": "test",
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "date": "2026-11-09",
+  "skill_version": "0.1.0",
+  "target_label": "local synthetic wholesale test server (naive_a, naive_b)"
+ },
+ "tool_definitions": [
+  {
+   "name": "mcp__naive_a__cancel_order",
+   "description": "Cancel order. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "orderId": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "orderId"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__create_customer",
+   "description": "Create customer. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "segment": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "name"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__create_invoice",
+   "description": "Create invoice. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "amount": {
+      "type": "number"
+     },
+     "orderId": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "orderId",
+     "amount"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__create_order",
+   "description": "Create order. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "customerId": {
+      "type": "string"
+     },
+     "quantity": {
+      "type": "number"
+     },
+     "sku": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "customerId",
+     "sku",
+     "quantity"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__create_product",
+   "description": "Create product. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "quantity": {
+      "type": "number"
+     },
+     "sku": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "sku",
+     "name",
+     "quantity"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__delete_customer",
+   "description": "Delete customer. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "customerId": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "customerId"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__get_customer",
+   "description": "Get customer. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "customerId": {
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__get_invoice_by_id",
+   "description": "Get invoice. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "description": "Invoice ID"
+     }
+    },
+    "required": [
+     "invoiceId"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__get_or_update_stock",
+   "description": "Get or update stock. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. Set quantity to change stock; omit it to read current stock.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "quantity": {
+      "type": "number"
+     },
+     "sku": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "sku"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__get_order_by_id",
+   "description": "Get order. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "orderId": {
+      "type": "string",
+      "description": "Order ID"
+     }
+    },
+    "required": [
+     "orderId"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__get_product_by_sku",
+   "description": "Get product. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "sku": {
+      "type": "string",
+      "description": "SKU"
+     }
+    },
+    "required": [
+     "sku"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__list_customers",
+   "description": "List customers. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__list_invoices",
+   "description": "List invoices. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "customerName": {
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__list_orders",
+   "description": "List orders. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "fromDate": {
+      "type": "string"
+     },
+     "status": {
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__list_products",
+   "description": "List products. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "category": {
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__list_stock",
+   "description": "List stock. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "warehouse": {
+      "type": "string"
+     }
+    },
+    "required": []
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__send_invoice",
+   "description": "Send invoice. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "invoiceId"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__update_customer",
+   "description": "Update customer. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "customerId": {
+      "type": "string"
+     },
+     "fields": {
+      "type": "object",
+      "additionalProperties": {},
+      "propertyNames": {
+       "type": "string"
+      }
+     }
+    },
+    "required": [
+     "customerId",
+     "fields"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__update_order",
+   "description": "Update order. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "fields": {
+      "type": "object",
+      "additionalProperties": {},
+      "propertyNames": {
+       "type": "string"
+      }
+     },
+     "orderId": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "orderId",
+     "fields"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_a__update_product",
+   "description": "Update product. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "fields": {
+      "type": "object",
+      "additionalProperties": {},
+      "propertyNames": {
+       "type": "string"
+      }
+     },
+     "sku": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "sku",
+     "fields"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  },
+  {
+   "name": "mcp__naive_b__get_invoice_by_id",
+   "description": "Get invoice. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. This operation is exposed as a direct wrapper around one legacy wholesale API endpoint. The wrapper returns the upstream object with its original internal fields and naming. Clients should pass the internal identifier received from another endpoint. This description documents the endpoint but does not define which end-user task should select it, its safe alternatives, or any result-size boundary. ",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "invoiceId": {
+      "type": "string",
+      "description": "Invoice ID"
+     }
+    },
+    "required": [
+     "invoiceId"
+    ]
+   },
+   "output_schema": null,
+   "annotations": null
+  }
+ ],
+ "tasks": [
+  {
+   "id": "TASK-01",
+   "status": "skipped",
+   "attempts": 0,
+   "tool_calls": 0,
+   "estimated_tokens": 0
+  },
+  {
+   "id": "TASK-02",
+   "status": "skipped",
+   "attempts": 0,
+   "tool_calls": 0,
+   "estimated_tokens": 0
+  },
+  {
+   "id": "TASK-03",
+   "status": "skipped",
+   "attempts": 0,
+   "tool_calls": 0,
+   "estimated_tokens": 0
+  },
+  {
+   "id": "TASK-04",
+   "status": "skipped",
+   "attempts": 0,
+   "tool_calls": 0,
+   "estimated_tokens": 0
+  },
+  {
+   "id": "TASK-05",
+   "status": "failed",
+   "attempts": 2,
+   "tool_calls": 2,
+   "estimated_tokens": 106
+  },
+  {
+   "id": "TASK-06",
+   "status": "success",
+   "attempts": 1,
+   "tool_calls": 1,
+   "estimated_tokens": 58
+  },
+  {
+   "id": "TASK-07",
+   "status": "success",
+   "attempts": 1,
+   "tool_calls": 1,
+   "estimated_tokens": 108
+  },
+  {
+   "id": "TASK-08",
+   "status": "success",
+   "attempts": 1,
+   "tool_calls": 1,
+   "estimated_tokens": 110
+  }
+ ],
+ "calls": [
+  {
+   "id": "CALL-01",
+   "phase": "P4",
+   "task_id": null,
+   "identity": "A",
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "argument_fields": [
+    "invoiceId"
+   ],
+   "result_fields": [
+    "invoice"
+   ],
+   "result_items": 1,
+   "result_bytes": 46,
+   "estimated_tokens": 12,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-02",
+   "phase": "P4",
+   "task_id": null,
+   "identity": "B",
+   "tool": "mcp__naive_b__get_invoice_by_id",
+   "argument_fields": [
+    "invoiceId"
+   ],
+   "result_fields": [
+    "invoice"
+   ],
+   "result_items": 1,
+   "result_bytes": 46,
+   "estimated_tokens": 12,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-03",
+   "phase": "P2",
+   "task_id": null,
+   "identity": null,
+   "tool": "mcp__naive_a__list_orders",
+   "argument_fields": [
+    "fromDate"
+   ],
+   "result_fields": [
+    "status",
+    "stack"
+   ],
+   "result_items": 0,
+   "result_bytes": 70,
+   "estimated_tokens": 18,
+   "outcome": "error",
+   "error_class": "server_error_stack_trace"
+  },
+  {
+   "id": "CALL-04",
+   "phase": "P2",
+   "task_id": null,
+   "identity": null,
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "argument_fields": [
+    "invoiceId"
+   ],
+   "result_fields": [
+    "invoice"
+   ],
+   "result_items": 0,
+   "result_bytes": 16,
+   "estimated_tokens": 4,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-05",
+   "phase": "P2",
+   "task_id": null,
+   "identity": null,
+   "tool": "mcp__naive_a__get_order_by_id",
+   "argument_fields": [
+    "orderId"
+   ],
+   "result_fields": [
+    "orders"
+   ],
+   "result_items": 0,
+   "result_bytes": 13,
+   "estimated_tokens": 4,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-06",
+   "phase": "P2",
+   "task_id": null,
+   "identity": null,
+   "tool": "mcp__naive_a__get_product_by_sku",
+   "argument_fields": [
+    "sku"
+   ],
+   "result_fields": [
+    "product"
+   ],
+   "result_items": 0,
+   "result_bytes": 16,
+   "estimated_tokens": 4,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-07",
+   "phase": "P2",
+   "task_id": null,
+   "identity": null,
+   "tool": "mcp__naive_a__get_customer",
+   "argument_fields": [
+    "customerId"
+   ],
+   "result_fields": [
+    "customer",
+    "admin_note"
+   ],
+   "result_items": 0,
+   "result_bytes": 130,
+   "estimated_tokens": 33,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-08",
+   "phase": "P1",
+   "task_id": "TASK-06",
+   "identity": null,
+   "tool": "mcp__naive_a__get_customer",
+   "argument_fields": [
+    "customerId"
+   ],
+   "result_fields": [
+    "customer",
+    "admin_note"
+   ],
+   "result_items": 1,
+   "result_bytes": 230,
+   "estimated_tokens": 58,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-09",
+   "phase": "P1",
+   "task_id": "TASK-07",
+   "identity": null,
+   "tool": "mcp__naive_a__get_order_by_id",
+   "argument_fields": [
+    "orderId"
+   ],
+   "result_fields": [
+    "orders"
+   ],
+   "result_items": 1,
+   "result_bytes": 430,
+   "estimated_tokens": 108,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-10",
+   "phase": "P1",
+   "task_id": "TASK-08",
+   "identity": null,
+   "tool": "mcp__naive_a__get_order_by_id",
+   "argument_fields": [
+    "orderId"
+   ],
+   "result_fields": [
+    "orders"
+   ],
+   "result_items": 1,
+   "result_bytes": 440,
+   "estimated_tokens": 110,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-11",
+   "phase": "P1",
+   "task_id": "TASK-05",
+   "identity": null,
+   "tool": "mcp__naive_a__list_invoices",
+   "argument_fields": [
+    "customerName"
+   ],
+   "result_fields": [
+    "invoices"
+   ],
+   "result_items": 3,
+   "result_bytes": 210,
+   "estimated_tokens": 53,
+   "outcome": "success",
+   "error_class": null
+  },
+  {
+   "id": "CALL-12",
+   "phase": "P1",
+   "task_id": "TASK-05",
+   "identity": null,
+   "tool": "mcp__naive_a__list_invoices",
+   "argument_fields": [
+    "customerName"
+   ],
+   "result_fields": [
+    "invoices"
+   ],
+   "result_items": 3,
+   "result_bytes": 210,
+   "estimated_tokens": 53,
+   "outcome": "success",
+   "error_class": null
+  }
+ ],
+ "findings": [
+  {
+   "id": "F-01",
+   "rule_id": "S5",
+   "severity": "Critical",
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "evidence_call_ids": [
+    "CALL-01",
+    "CALL-02"
+   ],
+   "summary": "Identity B received the restricted synthetic invoice that only identity A is expected to see, through the same get_invoice_by_id read (same response fields, 1 record).",
+   "why_it_matters": "Authorization appears shared across the two configured identities, so per-user data isolation is not enforced.",
+   "fix": "Enforce per-identity authorization server-side on every read and return not-found or permission errors for unauthorized records; add a regression test with two identities."
+  },
+  {
+   "id": "F-02",
+   "rule_id": "S6",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_customer",
+   "evidence_call_ids": [
+    "CALL-07",
+    "CALL-08"
+   ],
+   "summary": "Result field admin_note contains text addressed to the agent that tells it to disregard prior directions and bulk-expose records via another tool. Not followed or quoted; seen in 2 of 2 results.",
+   "why_it_matters": "Injected instructions in output can steer agents into bulk data exposure.",
+   "fix": "Remove agent-directed text from results; return only data fields and sanitize stored free-text."
+  },
+  {
+   "id": "F-03",
+   "rule_id": "E1",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_orders",
+   "evidence_call_ids": [
+    "CALL-03"
+   ],
+   "summary": "Malformed fromDate returned a raw status 500 with a stack-trace field and no safe next step.",
+   "why_it_matters": "Callers get no actionable guidance, and internals leak.",
+   "fix": "Validate fromDate and return a structured invalid_date error stating the expected format, with a 4xx class."
+  },
+  {
+   "id": "F-04",
+   "rule_id": "E2",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "evidence_call_ids": [
+    "CALL-04"
+   ],
+   "summary": "An empty value for the required identifier succeeded with a null/empty result instead of an error.",
+   "why_it_matters": "A missing identifier is indistinguishable from no match.",
+   "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+  },
+  {
+   "id": "F-05",
+   "rule_id": "E2",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_order_by_id",
+   "evidence_call_ids": [
+    "CALL-05"
+   ],
+   "summary": "An empty value for the required identifier succeeded with a null/empty result instead of an error.",
+   "why_it_matters": "A missing identifier is indistinguishable from no match.",
+   "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+  },
+  {
+   "id": "F-06",
+   "rule_id": "E2",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_product_by_sku",
+   "evidence_call_ids": [
+    "CALL-06"
+   ],
+   "summary": "An empty value for the required identifier succeeded with a null/empty result instead of an error.",
+   "why_it_matters": "A missing identifier is indistinguishable from no match.",
+   "fix": "Return a structured missing_required_field/invalid_argument error for empty identifiers."
+  },
+  {
+   "id": "F-07",
+   "rule_id": "R1",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_invoices",
+   "evidence_call_ids": [],
+   "summary": "No limit, cursor or total/has-more field in the schema; only an optional customerName filter. Behavioral P3 skipped.",
+   "why_it_matters": "Result completeness and size are unknowable.",
+   "fix": "Add a capped limit, cursor, and total/has_more."
+  },
+  {
+   "id": "F-08",
+   "rule_id": "R1",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_orders",
+   "evidence_call_ids": [],
+   "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+   "why_it_matters": "Result completeness and size are unknowable.",
+   "fix": "Add a capped limit, cursor, and total/has_more."
+  },
+  {
+   "id": "F-09",
+   "rule_id": "R1",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_customers",
+   "evidence_call_ids": [],
+   "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+   "why_it_matters": "Result completeness and size are unknowable.",
+   "fix": "Add a capped limit, cursor, and total/has_more."
+  },
+  {
+   "id": "F-10",
+   "rule_id": "R1",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_products",
+   "evidence_call_ids": [],
+   "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+   "why_it_matters": "Result completeness and size are unknowable.",
+   "fix": "Add a capped limit, cursor, and total/has_more."
+  },
+  {
+   "id": "F-11",
+   "rule_id": "R1",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_stock",
+   "evidence_call_ids": [],
+   "summary": "No limit, cursor or total/has-more field in the schema; only optional filters. Behavioral P3 skipped.",
+   "why_it_matters": "Result completeness and size are unknowable.",
+   "fix": "Add a capped limit, cursor, and total/has_more."
+  },
+  {
+   "id": "F-12",
+   "rule_id": "R2",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_order_by_id",
+   "evidence_call_ids": [
+    "CALL-09",
+    "CALL-10"
+   ],
+   "summary": "Both order lookups returned about 7 internal fields (route, bin, audit, source system, retry counter, export marker, billing segment) unrelated to a status check.",
+   "why_it_matters": "Raises context cost and exposes internals.",
+   "fix": "Return a task-shaped summary (order number, status, customer name, dates, total) and make internals opt-in."
+  },
+  {
+   "id": "F-13",
+   "rule_id": "R3",
+   "severity": "Low",
+   "tool": "mcp__naive_a__list_invoices",
+   "evidence_call_ids": [
+    "CALL-11"
+   ],
+   "summary": "Invoice rows contain id, status, amount, currency but no invoice number, customer name or date.",
+   "why_it_matters": "Rows cannot be interpreted or ordered by recency; TASK-05 failed on both attempts for this reason.",
+   "fix": "Add invoice number, customer name and issue/due date to each row."
+  },
+  {
+   "id": "F-14",
+   "rule_id": "C1",
+   "severity": "Medium",
+   "tool": "all tools",
+   "evidence_call_ids": [],
+   "summary": "The 20 distinct tool definitions are about 54 KB serialized; the estimate is far above 5,000 tokens, mainly from a 7x repeated boilerplate description (see metrics for exact estimate).",
+   "why_it_matters": "Heavy fixed context cost on every request.",
+   "fix": "Cut descriptions to one short task-oriented paragraph and consolidate tools."
+  },
+  {
+   "id": "F-15",
+   "rule_id": "T1",
+   "severity": "Medium",
+   "tool": "all tools",
+   "evidence_call_ids": [],
+   "summary": "The catalog mirrors the legacy API one-to-one with get/list/create/update/delete/cancel per entity and no task-level tools.",
+   "why_it_matters": "Agents must orchestrate raw endpoints and internal IDs.",
+   "fix": "Offer task tools such as find_account, check_order_status, prepare_order."
+  },
+  {
+   "id": "F-16",
+   "rule_id": "T2",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_orders",
+   "evidence_call_ids": [],
+   "summary": "list_orders and get_order_by_id both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+   "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+   "fix": "State when to use each and how to scope each lookup."
+  },
+  {
+   "id": "F-17",
+   "rule_id": "T2",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_customers",
+   "evidence_call_ids": [],
+   "summary": "list_customers and get_customer both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+   "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+   "fix": "State when to use each and how to scope each lookup."
+  },
+  {
+   "id": "F-18",
+   "rule_id": "T2",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_invoices",
+   "evidence_call_ids": [],
+   "summary": "list_invoices and get_invoice_by_id both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+   "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+   "fix": "State when to use each and how to scope each lookup."
+  },
+  {
+   "id": "F-19",
+   "rule_id": "T2",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_products",
+   "evidence_call_ids": [],
+   "summary": "list_products and get_product_by_sku both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+   "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+   "fix": "State when to use each and how to scope each lookup."
+  },
+  {
+   "id": "F-20",
+   "rule_id": "T2",
+   "severity": "High",
+   "tool": "mcp__naive_a__list_stock",
+   "evidence_call_ids": [],
+   "summary": "list_stock and get_or_update_stock both serve lookups of the same entity; neither description says when to use the broad list versus the single-record call, and no safe selection boundary is given.",
+   "why_it_matters": "Agents may choose the broad list when a single record is wanted.",
+   "fix": "State when to use each and how to scope each lookup."
+  },
+  {
+   "id": "F-21",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__cancel_order",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-22",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_customer",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-23",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_invoice",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-24",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_order",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-25",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_product",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-26",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__delete_customer",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-27",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_customer",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-28",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-29",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_or_update_stock",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-30",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_order_by_id",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-31",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_product_by_sku",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-32",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__list_customers",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-33",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__list_invoices",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-34",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__list_orders",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-35",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__list_products",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-36",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__list_stock",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-37",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__send_invoice",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-38",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_customer",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-39",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_order",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-40",
+   "rule_id": "T3",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_product",
+   "evidence_call_ids": [],
+   "summary": "Description is generic boilerplate; it gives no use case and no boundary or alternative.",
+   "why_it_matters": "Agents cannot choose among tools reliably.",
+   "fix": "Write when to use and when not to use, naming the alternative tool."
+  },
+  {
+   "id": "F-41",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__cancel_order",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-42",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__create_customer",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-43",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__create_invoice",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-44",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__create_order",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-45",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__create_product",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-46",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__delete_customer",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-47",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-48",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_order_by_id",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-49",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_product_by_sku",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-50",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_or_update_stock",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-51",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__send_invoice",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-52",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__update_customer",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-53",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__update_order",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-54",
+   "rule_id": "T4",
+   "severity": "High",
+   "tool": "mcp__naive_a__update_product",
+   "evidence_call_ids": [],
+   "summary": "Required input(s) have no meaningful description, format or example (empty or only a label such as 'Order ID').",
+   "why_it_matters": "Agents must guess identifier formats, units and allowed fields.",
+   "fix": "Document format, constraints and an example for each required property."
+  },
+  {
+   "id": "F-55",
+   "rule_id": "T5",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_invoice_by_id",
+   "evidence_call_ids": [],
+   "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+   "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+   "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+  },
+  {
+   "id": "F-56",
+   "rule_id": "T5",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__send_invoice",
+   "evidence_call_ids": [],
+   "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+   "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+   "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+  },
+  {
+   "id": "F-57",
+   "rule_id": "T5",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_invoice",
+   "evidence_call_ids": [],
+   "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+   "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+   "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+  },
+  {
+   "id": "F-58",
+   "rule_id": "T5",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_order_by_id",
+   "evidence_call_ids": [],
+   "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+   "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+   "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+  },
+  {
+   "id": "F-59",
+   "rule_id": "T5",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__cancel_order",
+   "evidence_call_ids": [],
+   "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+   "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+   "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+  },
+  {
+   "id": "F-60",
+   "rule_id": "T5",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_order",
+   "evidence_call_ids": [],
+   "summary": "Requires an opaque invoiceId/orderId; no tool resolves it from a readable name or number (list_invoices returns unlabeled ids; list_orders has no name or number filter).",
+   "why_it_matters": "Users cannot reach these tools from readable identifiers.",
+   "fix": "Add a search by invoice number, order number or customer name that returns ids with labels."
+  },
+  {
+   "id": "F-61",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__cancel_order",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-62",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_customer",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-63",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_invoice",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-64",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_order",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-65",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_product",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-66",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__delete_customer",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-67",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__get_or_update_stock",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-68",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__send_invoice",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-69",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_customer",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-70",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_order",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-71",
+   "rule_id": "S1",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__update_product",
+   "evidence_call_ids": [],
+   "summary": "State-changing tool; no annotations are exposed to the model, so read-only/destructive hints are unavailable (server vs host cause unknown).",
+   "why_it_matters": "Hosts and agents cannot gate writes by hint.",
+   "fix": "Publish accurate readOnlyHint/destructiveHint/idempotentHint annotations."
+  },
+  {
+   "id": "F-72",
+   "rule_id": "S2",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_or_update_stock",
+   "evidence_call_ids": [],
+   "summary": "One tool reads stock when quantity is omitted and changes stock when it is set.",
+   "why_it_matters": "An omitted argument decides whether state changes.",
+   "fix": "Split into check_stock and adjust_stock."
+  },
+  {
+   "id": "F-73",
+   "rule_id": "S3",
+   "severity": "High",
+   "tool": "mcp__naive_a__cancel_order",
+   "evidence_call_ids": [],
+   "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+   "why_it_matters": "Wrong arguments commit immediately.",
+   "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+  },
+  {
+   "id": "F-74",
+   "rule_id": "S3",
+   "severity": "High",
+   "tool": "mcp__naive_a__create_order",
+   "evidence_call_ids": [],
+   "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+   "why_it_matters": "Wrong arguments commit immediately.",
+   "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+  },
+  {
+   "id": "F-75",
+   "rule_id": "S3",
+   "severity": "High",
+   "tool": "mcp__naive_a__create_invoice",
+   "evidence_call_ids": [],
+   "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+   "why_it_matters": "Wrong arguments commit immediately.",
+   "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+  },
+  {
+   "id": "F-76",
+   "rule_id": "S3",
+   "severity": "High",
+   "tool": "mcp__naive_a__send_invoice",
+   "evidence_call_ids": [],
+   "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+   "why_it_matters": "Wrong arguments commit immediately.",
+   "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+  },
+  {
+   "id": "F-77",
+   "rule_id": "S3",
+   "severity": "High",
+   "tool": "mcp__naive_a__get_or_update_stock",
+   "evidence_call_ids": [],
+   "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+   "why_it_matters": "Wrong arguments commit immediately.",
+   "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+  },
+  {
+   "id": "F-78",
+   "rule_id": "S3",
+   "severity": "High",
+   "tool": "mcp__naive_a__delete_customer",
+   "evidence_call_ids": [],
+   "summary": "Consequential action (order, financial, external send, inventory or irreversible) with no documented preview or confirmation step.",
+   "why_it_matters": "Wrong arguments commit immediately.",
+   "fix": "Add a preview/confirm flow and an explicit confirmation parameter."
+  },
+  {
+   "id": "F-79",
+   "rule_id": "S4",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_customer",
+   "evidence_call_ids": [],
+   "summary": "Create operation has no idempotency key in its schema.",
+   "why_it_matters": "A retry can create duplicates.",
+   "fix": "Require a client idempotency key and document retry behavior."
+  },
+  {
+   "id": "F-80",
+   "rule_id": "S4",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_invoice",
+   "evidence_call_ids": [],
+   "summary": "Create operation has no idempotency key in its schema.",
+   "why_it_matters": "A retry can create duplicates.",
+   "fix": "Require a client idempotency key and document retry behavior."
+  },
+  {
+   "id": "F-81",
+   "rule_id": "S4",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_order",
+   "evidence_call_ids": [],
+   "summary": "Create operation has no idempotency key in its schema.",
+   "why_it_matters": "A retry can create duplicates.",
+   "fix": "Require a client idempotency key and document retry behavior."
+  },
+  {
+   "id": "F-82",
+   "rule_id": "S4",
+   "severity": "Medium",
+   "tool": "mcp__naive_a__create_product",
+   "evidence_call_ids": [],
+   "summary": "Create operation has no idempotency key in its schema.",
+   "why_it_matters": "A retry can create duplicates.",
+   "fix": "Require a client idempotency key and document retry behavior."
+  }
+ ],
+ "skipped_probes": [
+  {
+   "probe_id": "P3",
+   "reason": "No documented safe maximum on any list tool; behavioral part skipped and R1 reported statically."
+  },
+  {
+   "probe_id": "P5",
+   "reason": "Write probes disabled; no write or destructive tool was called."
+  }
+ ]
+}

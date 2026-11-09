@@ -71,7 +71,7 @@ To install manually, clone this repository and copy `SKILL.md`, `references/`, `
 
 ## Release status
 
-This is a prerelease. Codex passed the naive reference checks twice with stable high-severity findings and had no High or Critical findings on the good reference. Claude Code and GitHub Copilot have not yet been validated. See the [evaluation matrix](eval/agent-matrix-v0.1.json) and [sanitized reports](eval/artifacts/).
+This is a prerelease. Codex and Claude Code each passed the naive reference checks twice with stable High/Critical findings and had no High or Critical findings on the good reference. The final-skill Claude runs also reported all seeded findings. GitHub Copilot has not been validated, and Codex's saved run predates a small T5 checklist clarification, so exact cross-host parity remains unverified. See the [evaluation matrix](eval/agent-matrix-v0.1.json) and [sanitized reports](eval/artifacts/).
 
 For project development, reference-server evaluation, and release validation, see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer scripts and multi-agent checks are documented there.
 
