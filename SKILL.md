@@ -49,7 +49,7 @@ For write probes, obtain a separate yes for every exact call. A probe that check
 
 Load `references/report-template.md`. For each finding, give a stable rule ID, severity from `rules.md`, affected tool, compact evidence reference, impact, and a concrete fix. Distinguish observed behavior from an inference based on static definitions. Do not invent a finding to fill a rule. Do not count a skipped probe as passing.
 
-Create a sanitized `run.json` using the format in `references/report-template.md`. If Python 3 is available, run `scripts/grade.py run.json --json-out results.json --markdown-out report.md`; the script calculates grades and aggregate metrics from the structured findings. If it is unavailable, apply the same formula by hand and label the result accordingly. Do not edit the server or publish results without the user's request.
+Create a sanitized `run.json` using the format in `references/report-template.md`. The agent runs the bundled grader itself when Python 3.10+ is available: `scripts/grade.py run.json --json-out results.json --markdown-out report.md`. The script calculates grades and aggregate metrics from the structured findings. If Python 3.10+ is unavailable, apply the same formula by hand and label the result accordingly. The user does not need to invoke the script. Do not edit the server or publish results without the user's request.
 
 ## References
 

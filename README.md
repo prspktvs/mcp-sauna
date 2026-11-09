@@ -16,7 +16,11 @@ Keep the contents together so the skill can load `references/` and `scripts/`. C
 
 The shared `SKILL.md` uses only Agent Skills standard frontmatter and Markdown. Host installation paths differ; the review instructions and supporting files do not.
 
-## Run the local reference evaluation
+**For a normal review, you do not run repository scripts or multiple agents.** Ask your installed agent to run mcp-sauna against your connected test server. The agent runs the local grader automatically when Python 3.10+ is available; otherwise it calculates the same grade from the published formula. Neither path sends data to a mcp-sauna service.
+
+## Maintainer checks: reference evaluation
+
+This section is for contributors validating changes to mcp-sauna. It is not part of installing or using the skill.
 
 The two reference servers use synthetic wholesale-company data. The naive reference has 20 tools, for the spec's full-review timing target. They are local MCP servers over stdio, unrelated to AgentFinland, and are not connected to external systems.
 
@@ -29,7 +33,7 @@ SAUNA_VARIANT=naive node reference-servers/server.mjs
 
 Configure the host agent to start the command above as the `naive-demo` test server. For example, an MCP client configuration can set `command` to `node`, `args` to the absolute path of `reference-servers/server.mjs`, and `env` to `{"SAUNA_VARIANT":"naive"}`. Start the same server with `SAUNA_VARIANT=good` for the better-designed reference. Use `examples/tasks.example.yaml` for confirmed read tasks.
 
-Run mcp-sauna against each server twice, save the sanitized `results.json` reports, then check seeded findings and repeatability:
+To validate a skill change, run mcp-sauna against each reference server and use the scripts to check seeded findings and repeatability:
 
 ```sh
 python3 scripts/check_reference_eval.py naive results-naive.json
@@ -40,17 +44,17 @@ python3 scripts/grade.py --compare results-good-run1.json results-good-run2.json
 
 The naive server is seeded with the findings in `eval/reference-expectations.json`. The good server should produce no High or Critical false positives. The checker evaluates rule IDs and tools; it does not reinterpret prose. `eval/agent-matrix.md` records the manual cross-agent procedure and evidence required for a release claim.
 
-The current validation matrix and sanitized Codex artifacts are in `eval/agent-matrix-v0.1.json` and `eval/artifacts/`. Codex passed the naive seeded checks twice with stable high-severity findings and produced no High/Critical false positives on the good server. Claude Code and GitHub Copilot remain untested, so the three-agent release criterion is still open; this version is published as a prerelease.
+The current validation matrix and sanitized Codex artifacts are in `eval/agent-matrix-v0.1.json` and `eval/artifacts/`. Testing the skill in multiple host agents is release-maintainer work used to verify portability; a skill user does not need to install or run multiple agents. Codex passed the naive seeded checks twice with stable high-severity findings and produced no High/Critical false positives on the good server. Claude Code and GitHub Copilot remain untested, so the three-agent release criterion is still open; this version is published as a prerelease.
 
-## Grade a sanitized run
+## Optional: manually grade a saved run
 
-The skill may generate `run.json` using the schema in `references/report-template.md`. The standard-library grader validates structure, applies fixed rule severities, computes the scorecard, and emits equivalent JSON and Markdown reports:
+Normally the agent runs this automatically. A maintainer can run it manually to inspect or regrade an existing sanitized `run.json`. The standard-library grader validates structure, applies fixed rule severities, computes the scorecard, and emits equivalent JSON and Markdown reports:
 
 ```sh
 python3 scripts/grade.py run.json --json-out results.json --markdown-out report.md
 ```
 
-`grade.py` makes no network calls. It rejects raw call argument/result fields and derives severity from the stable rule table. The report contains identifiers and evidence references, not raw MCP data.
+`grade.py` makes no network calls. It rejects raw call argument/result fields and derives severity from the stable rule table. The report contains identifiers and evidence references, not raw MCP data. `check_reference_eval.py` and the comparison commands above are maintainer checks; they are not needed for an ordinary review.
 
 The report footer reads the paid-review booking link from `MCP_SAUNA_BOOKING_URL`. Set it to an HTTPS URL before publishing reports; without it, the report marks the link as unconfigured instead of inventing one.
 
