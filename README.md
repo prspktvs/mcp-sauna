@@ -1,77 +1,95 @@
 # mcp-sauna
 
-**Find out whether your MCP server gives an AI agent the right tools for the job.**
+**Give your MCP server a rehearsal before real users depend on it.**
 
-mcp-sauna is an open-source Agent Skill for developers building or inheriting MCP servers. It reviews the server's tools the way a model encounters them, then gives you a scorecard and a prioritized list of design fixes.
+Your agent never sees your backend. It sees tool names, descriptions, schemas, annotations, and the responses those tools return. That contract is the interface. If it is unclear, an agent can choose the wrong tool, guess at an ID, drown in search results, or mistake an error for “no matches”—even when every endpoint works.
 
-## Why use it?
+mcp-sauna reviews that agent-facing experience and gives you a prioritized, evidence-backed report of what to fix.
 
-An MCP server can work correctly at the protocol level and still be difficult for an agent to use. Tool names may mirror backend endpoints instead of user tasks. Descriptions may not tell the model which tool to choose. Required inputs may be vague, searches may return too much, and errors may give no useful next step. State-changing tools can also be hard to distinguish from reads.
+> Connect your **development or test MCP server** to your agent, invoke the skill, and ask for a review. The agent runs it and produces the report. **You don’t run scripts, start test servers, or coordinate multiple agents.**
 
-Those are interface problems. Rewriting prompts around them can hide a symptom without improving the tool contract. mcp-sauna helps you find and describe the contract issues so you can fix them at the server boundary.
+## Why use mcp-sauna?
 
-## How the review works
+Protocol checks can tell you that an MCP server responds. They cannot tell you whether an agent can use it to finish a real task.
 
-The skill follows five steps:
+An agent makes decisions from the tool contract: which operation fits, what an input means, whether a result is complete, and how to recover from an error. When that contract leaves gaps, the model has to guess. Users see the cost as failed requests, repeated calls, oversized answers, or a result that looks successful but is incomplete.
 
-1. Confirms the target and a `dev`, `test`, or `staging` environment.
-2. Reviews tool names, descriptions, schemas, annotations, and overlaps against written design rules.
-3. Plans bounded probes using tasks you provide or approve.
-4. Runs safe reads to check task completion, errors, result size, and permissions when two test identities are available.
-5. Produces a report with evidence and concrete fixes.
+mcp-sauna helps you find those gaps while the server is still in development. It checks the interface the way an agent encounters it, then shows maintainers where to make the contract clearer and safer.
 
-The model decides whether a rule applies based on the tool contract and observed evidence. A bundled local grader applies fixed severities and calculates the scorecard, so arithmetic is consistent. Skipped probes are marked incomplete; they do not count as passes.
+It is especially useful when you are:
+
+- preparing an MCP server for agent or customer use;
+- inheriting a server and need to understand its weak spots quickly;
+- changing tools or schemas and want to catch regressions;
+- comparing successive reviews to see whether fixes improved the experience.
+
+If you are the only person calling a small internal MCP server, you may not need it yet. If an agent is part of your product, this is a practical check before users become the testers.
+
+## What the review checks
+
+The review looks for problems such as:
+
+- two tools that look like they do the same job, with no guidance on which to choose;
+- required inputs whose format or meaning is unclear;
+- internal IDs the agent has no way to resolve;
+- searches with no useful page boundary, or responses that return far more than a task needs;
+- errors that leave the agent with no safe next step;
+- state-changing tools whose safety annotations do not match what they do.
+
+It also runs a bounded set of confirmed tasks through safe tools when the environment and tool contracts allow it. That helps reveal what static schema review misses: whether the workflow can complete, how errors behave, and how much context the results consume.
+
+### Example finding
+
+> **High — E1: Unhelpful error response** (`find_customer`, CALL-12)\
+> An invalid customer reference returns an empty list, so the agent cannot tell a bad reference from a valid search with no matches. Return a structured validation error with a stable code and a safe next step.
+
+Each finding names the affected tool, points to compact evidence, explains the impact, and suggests a concrete fix. The report also lists checks that were skipped, so an incomplete review is not mistaken for a pass.
+
+## How it works
+
+1. **You identify a non-production server.** Provide a `dev`, `test`, or `staging` environment and, if you have them, the tasks you want reviewed.
+2. **The skill inspects the agent-facing contract.** It reviews tool names, descriptions, schemas, annotations, overlaps, and result boundaries against mcp-sauna’s written rules.
+3. **It runs bounded, safe probes.** It uses your confirmed tasks, respects call and response limits, and never calls destructive tools. Write probes are off unless explicitly enabled and individually confirmed.
+4. **You get a scorecard and prioritized fixes.** A bundled grader applies the same severity rules every time. The skill recommends changes; it does not edit your server.
+
+The model judges findings from the definitions and observed evidence. The local grader handles the arithmetic. Checks that could not be run safely are marked **incomplete**, not counted as passes.
 
 ## What you get
 
-The review creates:
+The agent saves three files in its workspace:
 
-- **`report.md`** — an overview, scorecard, prioritized findings, evidence references, and skipped checks.
-- **`results.json`** — the same findings in machine-readable form for comparing reviews over time.
-- **`run.json`** — a sanitized record used to produce the report. It contains tool and field names, counts, and outcome metadata, not raw arguments or result values.
+- **`report.md`** — the human-readable scorecard, findings, evidence references, task outcomes, and skipped probes;
+- **`results.json`** — the same review in machine-readable form, useful for comparing runs or building your own reporting;
+- **`run.json`** — a sanitized input record containing tool and field names, counts, outcomes, and estimates, not raw arguments or result values.
 
-The scorecard covers five areas: **Tool design, Context cost, Responses, Errors, and Safety.** Findings use stable rule IDs and four severity levels:
+The scorecard covers five areas: **Tool design, Context cost, Responses, Errors, and Safety.** Findings have stable rule IDs and severity levels, so you can see what matters most and compare future runs. If a check cannot safely run, the overall result stays **incomplete** until the relevant coverage is available.
 
-| Finding severity | Dimension grade |
-| --- | --- |
-| No finding established | A |
-| Low | B |
-| Medium | C |
-| High | D |
-| Critical | F |
+See the [sample report](examples/report.example.md) for the full format.
 
-The overall grade is the worst dimension grade when the review is complete. If a required check could not be run safely, the affected dimension and overall result are marked **incomplete**. A finding includes the affected tool, evidence reference, why it matters, and a suggested fix.
+## Try it
 
-**Example finding:** A search tool has no maximum page size or continuation signal. mcp-sauna reports the applicable rule, the tool and evidence, explains that results may be incomplete or too large, and recommends a bounded limit with pagination metadata.
-
-See the [sample report](examples/report.example.md) for the full report layout.
-
-## Use it
-
-1. Install the repository's root skill folder in your agent's skills directory:
+1. Install the repository’s root skill folder in your agent’s skills directory:
    - Claude Code: `.claude/skills/mcp-sauna/`
    - Codex: `.agents/skills/mcp-sauna/`
    - GitHub Copilot: `.github/skills/mcp-sauna/`
 2. Connect your MCP server to the agent as usual, using a non-production environment.
 3. Ask: **“Put the `erp-dev` MCP server through mcp-sauna.”**
 
-If you provide a task file, the skill uses those tasks. Otherwise, it drafts tasks from the tool list and asks you to confirm them before probing. It then saves the report artifacts in the agent's workspace.
+If you provide a task file, mcp-sauna uses those tasks. Otherwise, it drafts realistic tasks from the tool list and asks you to confirm them before behavioral probes. It then saves the report files in the agent’s workspace.
 
-To install manually, clone this repository and copy `SKILL.md`, `references/`, `scripts/`, and `examples/` into the host's `mcp-sauna` skills folder. Keep those files together so the skill can load its rules, report format, and grader.
-
-**You do not need to run Python or project scripts, start the reference servers, or use multiple agents.** The agent runs the bundled grader automatically when Python 3.10+ is available; otherwise it applies the same grading formula itself. There is no hosted mcp-sauna service.
+For a manual install, copy `SKILL.md`, `references/`, `scripts/`, and `examples/` into the host’s `mcp-sauna` skills folder. Keep them together so the skill can load its rules, report format, and grader. The agent runs the bundled grader automatically when Python 3.10+ is available; otherwise it applies the same grading formula itself. There is no hosted mcp-sauna service.
 
 ## Safety and limits
 
 - Production is out of scope. The skill stops if the environment is production or appears production-like.
-- Probes are read-only by default. Every enabled write call needs separate confirmation; destructive tools are never called.
-- Calls and review time are bounded. The skill stops on unexpectedly large or sensitive results.
-- Reports omit raw call arguments and result values. Tool output still passes through the model provider already used by your agent.
-- mcp-sauna is a design review, not a security audit, penetration test, or MCP protocol conformance suite. It recommends changes but never edits your server.
+- Read probes are the default. Every enabled write call needs separate confirmation; destructive tools are never called.
+- Reviews are bounded by time, call count, and response size. The skill stops when a result is unexpectedly large or sensitive.
+- Reports omit raw arguments and result values. Tool output still passes through the model provider already used by your agent.
+- mcp-sauna is a design review, not a security audit, penetration test, or MCP protocol conformance suite.
 
 ## Release status
 
-This is a prerelease. Codex and Claude Code each passed the naive reference checks twice with stable High/Critical findings and had no High or Critical findings on the good reference. The final-skill Claude runs also reported all seeded findings. GitHub Copilot has not been validated, and Codex's saved run predates a small T5 checklist clarification, so exact cross-host parity remains unverified. See the [evaluation matrix](eval/agent-matrix-v0.1.json) and [sanitized reports](eval/artifacts/).
+This is a prerelease. Codex and Claude Code each passed the naive reference checks twice with stable High/Critical findings and had no High or Critical findings on the good reference. The final-skill Claude runs also reported all seeded findings. GitHub Copilot has not been validated, and Codex’s saved run predates a small T5 checklist clarification, so exact cross-host parity remains unverified. See the [evaluation matrix](eval/agent-matrix-v0.1.json) and [sanitized reports](eval/artifacts/).
 
 For project development, reference-server evaluation, and release validation, see [CONTRIBUTING.md](CONTRIBUTING.md). Maintainer scripts and multi-agent checks are documented there.
 
